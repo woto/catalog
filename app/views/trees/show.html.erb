@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Es index:</strong>
+  <%= @tree.es_index %>
+</p>
+
+<p>
+  <strong>Es type:</strong>
+  <%= @tree.es_type %>
+</p>
+
+<p>
+  <strong>Es body:</strong>
+  <%= @tree.es_body %>
+</p>
+
+<p>
+  <strong>Parent:</strong>
+  <%= @tree.parent_id %>
+</p>
+
+<%= link_to 'Edit', edit_tree_path(@tree) %> |
+<%= link_to 'Back', trees_path %>

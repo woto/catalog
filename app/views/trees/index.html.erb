@@ -1,0 +1,42 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Trees</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Es index</th>
+      <th>Es type</th>
+      <th>Es body</th>
+      <th>Parent</th>
+      <th>Sort order</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @trees.each do |tree| %>
+      <tr>
+        <td><%= tree.id %></td>
+        <td><%= tree.es_index %></td>
+        <td><%= tree.es_type %></td>
+        <td><%= tree.es_body %></td>
+        <td><%= tree.parent_id %></td>
+        <td><%= tree.sort_order %></td>
+        <td><%= link_to_unless tree.leaf?, 'Index', trees_path(id: tree) %></td>
+        <td><%= link_to 'Show', tree %></td>
+        <td><%= link_to 'Edit', edit_tree_path(tree) %></td>
+        <td><%= link_to 'Destroy', tree, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Tree', new_tree_path %>
+
+<% if @tree %>
+  <%= link_to 'Back', trees_path(id: @tree.parent) %>
+<% end %>

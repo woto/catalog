@@ -1,0 +1,99 @@
+<div class="container">
+  <%= row do %>
+    <div class="col-xl-2"></div>
+    <div class="col-lg-24 col-xl-20">
+      <%= row do %>
+      <h2 class="m-b-2"><%= @product.es_body['title'] %></h2>
+
+      <%= render 'farm/products/breadcrumb' %>
+
+      <style>
+        .vcenter {
+            display: inline-block;
+            vertical-align: middle;
+            float: none;
+        }
+
+      </style>
+      <%= row do %>
+        <div class="col-xs-24 col-xl-16 col-lg-17 vcenter">
+          <div style="padding: 0 4rem;">
+            <div class="slider slider-for">
+              <!--
+              <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_2_v1.jpg"></div>
+              <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
+              <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
+              <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/C/O/CO011AUFZ698_4_v2.jpg"></div>
+              <div><img class="img-fluid" src="http://pi0.lmcdn.ru/img389x562/S/P/SP014BWIPP10_9_v1.jpg"></div>
+              -->
+              <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_2_v1.jpg"></div>
+              <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_3_v1.jpg"></div>
+              <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_3_v1.jpg"></div>
+              <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/C/O/CO011AUFZ698_4_v2.jpg"></div>
+              <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi0.lmcdn.ru/product/S/P/SP014BWIPP10_9_v1.jpg"></div>
+            </div>
+          </div>
+        </div><!--
+        --><div class="col-xs-24 col-xl-8 col-lg-7 vcenter">
+          <div>
+            <small class="text-success">
+              <%= icon 'check' %>
+              Товар в наличии
+            </small>
+            <h5 class="m-t-0"><%= number_to_currency @product.es_body['price'] %></h5>
+            <div>
+              <%= link_to "#", class: "btn btn-success m-t-2 m-b-1" do %>
+                <%= icon 'cart-arrow-down m-r-1' %>Добавить в корзину
+              <% end %>
+            </div>
+            <div>
+              <button type="button" class="btn btn-sm btn-secondary">Задать вопрос</button>
+            </div>
+            <div class="m-y-2">
+              <strong class="text-muted m-y-1">Другие фото товара</strong>
+              <div class="slider slider-nav m-y-1">
+                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_2_v1.jpg"></div>
+                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
+                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
+                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/C/O/CO011AUFZ698_4_v2.jpg"></div>
+                <div><img class="img-fluid" src="http://pi0.lmcdn.ru/img389x562/S/P/SP014BWIPP10_9_v1.jpg"></div>
+              </div>
+            </div>
+            <% if false %>
+            <% if @animals %>
+              <strong> Подходит для </strong>
+              <ul>
+              <% @animals.each do |animal| %>
+                <li><%= animal.es_body['title'] %></li>
+              <% end %>
+              </ul>
+            <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+      <%# image_tag(@product.es_body['thumbnail'] || 'not_available.png', class: 'img-fluid')  %>
+      <% end %>
+
+      <%= row style: 'border-top: 1rem solid #FAFAFA;', class: 'p-t-3 m-b-3' do %>
+        <div class="col-lg-24">
+          <h4> Возможно вас так же заинтересует </h4>
+          aaa
+        </div>
+      <% end %>
+
+      <%= row style: "border-top: 1rem solid #FAFAFA;", class: 'p-t-3 m-b-3' do %>
+        <div class="col-lg-24">
+          <h4> Ранее вы просматривали </h4>
+          <% @history_products.each do |history_product| %>
+            <div><%= history_product %></div>
+          <% end %>
+        </div>
+      <% end %>
+
+    </div>
+  <% end %>
+
+
+
+</div>

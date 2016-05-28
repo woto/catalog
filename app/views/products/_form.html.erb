@@ -1,0 +1,126 @@
+<div id="jsoneditor" style="width: 600px; height: 400px;"></div>
+<br />
+<br />
+<input type="text" id="es_index" value="<%= product.es_index %>">
+<br />
+<br />
+<input type="text" id="es_type" value="<%= product.es_type %>">
+<br />
+<br />
+<div id="formresult"></div>
+<br />
+<button id="sendJSON">Send JSON</button>
+<br />
+<br />
+
+<script>
+  // create the editor
+  var container = document.getElementById("jsoneditor");
+  /*
+  var schema = {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Product set",
+    "type": "array",
+    "items": {
+        "title": "Product",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "The unique identifier for a product",
+                "type": "number"
+            },
+            "name": {
+                "type": "string"
+            },
+            "price": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMinimum": true
+            },
+            "tags": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 1,
+                "uniqueItems": true
+            },
+            "dimensions": {
+                "type": "object",
+                "properties": {
+                    "length": {"type": "number"},
+                    "width": {"type": "number"},
+                    "height": {"type": "number"}
+                },
+                "required": ["length", "width", "height"]
+            },
+        },
+        "required": ["id", "name", "price"]
+    }
+  };
+  */
+  var schema = {
+    'title': 'Schema',
+    'type': 'object',
+    'properties': {
+      'title': {
+        'type': 'string'
+      },
+      'category_ids': {
+        'type': 'array',
+        'items': {
+          'type': 'integer',
+          'minItems': 1,
+          'uniqueItems': true
+        }
+      }
+    },
+    'required': ['title', 'category_ids']
+  };
+
+  var options = {
+    mode: 'tree',
+    modes: ['code', 'form', 'text', 'tree', 'view'], // allowed modes
+    onError: function (err) {
+      alert(err.toString());
+    },
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode);
+    },
+    'schema': schema
+  };
+
+  var editor = new JSONEditor(container, options);
+  var es_body = <%= product.es_body.to_json.html_safe %>;
+  editor.set(es_body);
+
+  var makeRequest = function(done){
+    var xhr = new XMLHttpRequest();
+    xhr.open('<%= product.persisted? ? 'PUT' : 'POST' %>', '<%= polymorphic_path(product, {format: 'json'}) %>', true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.setRequestHeader('accept', 'application/json');
+
+    xhr.onload = function () {
+      done(null, xhr.response);
+    };
+
+    xhr.onerror = function () {
+      done(xhr.response);
+    };
+
+    // get json
+    var es_body = editor.get();
+    var es_index = document.querySelector('#es_index').value;
+    var es_type = document.querySelector('#es_type').value;
+    xhr.send(JSON.stringify({product: {es_index: es_index, es_type: es_type, es_body: es_body}}));
+  };
+
+  $('#sendJSON').on("click", function(){
+    makeRequest(function(err, response){
+      if (err) { throw err; }
+      $('#formresult').html(response);
+    })
+  });
+
+
+</script>

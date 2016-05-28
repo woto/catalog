@@ -1,0 +1,56 @@
+<section class="jumbotron text-xs-center">
+  <div class="container">
+    <h1 class="jumbotron-heading">Фермерство в Подъячево</h1>
+    <p class="lead text-muted">Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в домашних условиях.</p>
+    <!--
+    <p>
+      <a href="#" class="btn btn-primary">Main call to action</a>
+      <a href="#" class="btn btn-secondary">Secondary action</a>
+    </p>
+    -->
+  </div>
+</section>
+
+<div class="container m-t-3">
+  <div class="row">
+    <div class="col-xs-24">
+
+      <% items_per_slice = 3 %>
+      <% @animals.each_slice(items_per_slice) do |slice| %>
+        <div class="card-deck-wrapper">
+          <div class="card-deck">
+            <% slice.each do |animal| %>
+              <div class="welcome-animals__card card">
+                <%= image_tag animal[0].es_body['thumbnail'], class: 'card-img-top m-x-auto d-block', style: 'height: 165px' %>
+                <div class="card-block">
+                  <h4 class="card-title"><%= animal[0].es_body['title'] %></h4>
+                  <p class="card-text"><%= animal[0].es_body['intro'] %></p>
+                  <%= link_to "#{animal[1]} #{t(:product, count: animal[1])}", farm_search_path(animal_ids: [animal[0].id]), class: 'btn btn-primary' %>
+                </div>
+              </div>
+            <% end %>
+            <% (items_per_slice - slice.size).times do |space| %>
+              <div class="card" style="visibility: hidden"></div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div class="text-muted">
+  <div class="container">
+
+    <div class="row">
+      <% @categories.each do |category| %>
+        <div class="card">
+          <img data-src="holder.js/100px280/thumb" alt="Card image cap">
+          <p class="card-text"><%= link_to category.es_body['title'], farm_search_path(category_id: category.id) %></p>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

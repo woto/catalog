@@ -1,0 +1,51 @@
+<h2 class="m-b-1">
+  <% if @category && !@category.root? %>
+    <%= @category.es_body['title'] %>
+  <% else %>
+    Все товары
+  <% end %>
+</h2>
+
+<div class="m-b-2" style="line-height: 2rem">
+  <% @option_values.keys.each do |key| %>
+    <% concat " " %>
+    <% @option_values[key].map do |value| 
+      concat " "
+      option_ids = request.query_parameters[key].reject{|el| el == value.id.to_s}
+      concat(
+        link_to(request.query_parameters.merge(key => option_ids), class: "btn-delete-aggregation") do
+          concat value.es_body['title']
+          concat " "
+          concat icon("times-circle")
+        end
+      )
+      concat " и " if @option_values[key].size > 1 && @option_values[key].last != value
+    end %>
+  <% end if @option_values %>
+
+  <% if params[:min_price] || params[:max_price] %>
+    стоимостью 
+    <% if params[:min_price] %>
+      <%= link_to request.query_parameters.except(:min_price), class: "btn-delete-aggregation" do %>
+        от <%= number_to_currency params[:min_price], precision: 0 %>
+        <%= icon "times-circle" %>
+      <% end %>
+    <% end %>
+
+    <% if params[:max_price] %>
+      <%= link_to request.query_parameters.except(:max_price), class: "btn-delete-aggregation" do %>
+        до <%= number_to_currency params[:max_price], precision: 0 %>
+        <%= icon "times-circle" %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% if params[:q].present? %>
+    <%= link_to request.query_parameters.except(:q), class: "btn-delete-aggregation" do %>
+      по запросу
+      "<%= params[:q] %>"
+      <%= icon "times-circle" %>
+    <% end %>
+  <% end %>
+
+</div>

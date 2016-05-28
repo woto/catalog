@@ -46,3 +46,20 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+gem 'elasticsearch', git: 'git://github.com/elasticsearch/elasticsearch-ruby.git'
+
+gem 'simple_form'
+gem 'closure_tree', github: 'mceachen/closure_tree'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.1.0'
+  gem 'rails-assets-holderjs'
+end
+
+gem 'rails-i18n'
+
+# TODO replace on stable after bug resolved
+# https://github.com/sferik/rails_admin/issues/2628
+gem 'kaminari', github: 'amatsuda/kaminari'
+gem 'woto_helpers', path: '../woto_helpers'

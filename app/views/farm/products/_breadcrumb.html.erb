@@ -1,0 +1,31 @@
+<nav class="breadcrumb m-b-1">
+  <%= link_to 'Магазин', farm_search_path, class: 'breadcrumb-item' %>
+  <% (primary = @breadcrumbs.shift).each_with_index do |element, index| %>
+    <% next if index == 0 %>
+    <%= link_to element.es_body['title'], farm_search_path(category_id: element.id), class: 'breadcrumb-item' %>
+  <% end %>
+
+  <% if session[:previous_url] %>
+    <%= link_to session[:previous_url], id: 'back-breadcrumb', class: 'breadcrumb-item pull-xs-right' do %>
+      <%= icon 'caret-left' %>
+      Назад
+    <% end %>
+  <% end %>
+</nav>
+
+<% if @breadcrumbs.present? %>
+  <div style="font-size: 90%" class="m-b-1 clearfix">
+    <span class="pull-xs-left">
+      Товар так же находится в категории:
+    </span>
+      <% @breadcrumbs.each_with_index do |breadcrumb, index| %>
+        <nav class="breadcrumb pull-xs-left m-l-1" style="margin: 0; padding: 0; background: none">
+          <% (secondary = breadcrumb).each_with_index do |element, index| %>
+            <% next if index == 0 %>
+            <%= link_to element.es_body['title'], farm_search_path(category_id: element.id), class: 'breadcrumb-item' %>
+          <% end %>
+          <%= content_tag(:span, ' и ', class: 'm-l-1')  if breadcrumb != @breadcrumbs.last %> 
+        </nav>
+      <% end %>
+  </div>
+<% end %>

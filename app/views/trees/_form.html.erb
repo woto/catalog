@@ -1,0 +1,116 @@
+<div id="jsoneditor" style="width: 600px; height: 400px;"></div>
+<br />
+<br />
+<label>es_index</label>
+<input type="text" id="es_index" value="<%= tree.es_index %>">
+<br />
+<br />
+<label>es_type</label>
+<input type="text" id="es_type" value="<%= tree.es_type %>">
+<br />
+<br />
+<label>parent_id</label>
+<input type="text" id="parent_id" value="<%= tree.parent_id %>">
+<br />
+<br />
+<label>sort_order</label>
+<input type="text" id="sort_order" value="<%= tree.sort_order %>">
+<br />
+<br />
+<div id="formresult"></div>
+<br />
+<button id="sendJSON">Send JSON</button>
+<br />
+<br />
+
+<script>
+  // create the editor
+  var container = document.getElementById("jsoneditor");
+
+  var options = {
+    mode: 'tree',
+    modes: ['code', 'form', 'text', 'tree', 'view'], // allowed modes
+    onError: function (err) {
+      alert(err.toString());
+    },
+    onModeChange: function (newMode, oldMode) {
+      console.log('Mode switched from', oldMode, 'to', newMode);
+    }
+  };
+
+  var editor = new JSONEditor(container, options);
+  var es_body = <%= tree.es_body.to_json.html_safe %>;
+  editor.set(es_body);
+
+  var makeRequest = function(done){
+    var xhr = new XMLHttpRequest();
+    xhr.open('<%= tree.persisted? ? 'PUT' : 'POST' %>', '<%= polymorphic_path(tree, {format: 'json'}) %>', true);
+    xhr.setRequestHeader('content-type', 'application/json');
+    xhr.setRequestHeader('accept', 'application/json');
+
+    xhr.onload = function () {
+      done(null, xhr.response);
+    };
+
+    xhr.onerror = function () {
+      done(xhr.response);
+    };
+
+    // get json
+    var es_body = editor.get();
+    var es_index = document.querySelector('#es_index').value;
+    var es_type = document.querySelector('#es_type').value;
+    var parent_id = document.querySelector('#parent_id').value;
+    var sort_order = document.querySelector('#sort_order').value;
+    xhr.send(JSON.stringify({tree: {es_index: es_index, es_type: es_type, es_body: es_body, parent_id: parent_id, sort_order: sort_order}}));
+  };
+
+  $('#sendJSON').on("click", function(){
+    makeRequest(function(err, response){
+      if (err) { throw err; }
+      $('#formresult').html(response);
+    })
+  });
+
+
+</script>
+
+<% if false %>
+<%= form_for(tree) do |f| %>
+  <% if tree.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(tree.errors.count, "error") %> prohibited this tree from being saved:</h2>
+
+      <ul>
+      <% tree.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :es_index %>
+    <%= f.text_field :es_index %>
+  </div>
+
+  <div class="field">
+    <%= f.label :es_type %>
+    <%= f.text_field :es_type %>
+  </div>
+
+  <div class="field">
+    <%= f.label :es_body %>
+    <%= f.text_field :es_body %>
+  </div>
+
+  <div class="field">
+    <%= f.label :parent_id %>
+    <%= f.number_field :parent_id %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+<% end %>

@@ -1,0 +1,21 @@
+//= require slick/slick/slick
+//= require slick/slick/slick-theme
+
+
+// TODO Почему-то криво -2/0
+.slick-prev {
+  margin-left: -2rem;
+}
+.slick-next {
+  margin-right: -2rem;
+}
+.slick-prev, .slick-next {
+  font-size: 3rem;
+  width: 3rem;
+  height: 3rem;
+}
+.slick-prev:before, .slick-next:before {
+  color: #999;
+  font-size: 3rem;
+}
+

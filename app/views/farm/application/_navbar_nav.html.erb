@@ -1,0 +1,19 @@
+<ul class="nav navbar-nav">
+  <% active = params[:controller] == 'farm/welcome' ? 'active' : '' %>
+  <li class="nav-item <%= active %>">
+    <%= link_to 'Главная', farm_root_path, class: "nav-link" %>
+  </li>
+  <% active = params[:controller].in?(['farm/search', 'farm/products']) ? 'active' : '' %>
+  <li class="nav-item <%= active %>">
+    <%= link_to 'Магазин', farm_search_path, class: 'nav-link' %>
+  </li>
+  <% active = params[:controller] == 'farm/articles' ? 'active' : '' %>
+  <li class="nav-item <%= active %>">
+    <a class="nav-link" href="#">Статьи</a>
+  </li>
+  <% active = params[:controller] == 'farm/about' ? 'active' : '' %>
+  <li class="nav-item <%= active %>">
+    <a class="nav-link" href="#">О нас</a>
+  </li>
+</ul>
+

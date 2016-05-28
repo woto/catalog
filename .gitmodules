@@ -1,0 +1,24 @@
+[submodule "system/submodules/bootstrap"]
+	path = system/submodules/bootstrap
+	url = https://github.com/twbs/bootstrap
+[submodule "system/submodules/noUiSlider"]
+	path = system/submodules/noUiSlider
+	url = https://github.com/leongersen/noUiSlider
+[submodule "system/submodules/wnumb"]
+	path = system/submodules/wnumb
+	url = https://github.com/leongersen/wnumb
+[submodule "system/submodules/slick"]
+	path = system/submodules/slick
+	url = https://github.com/kenwheeler/slick/
+[submodule "system/submodules/Font-Awesome"]
+	path = system/submodules/Font-Awesome
+	url = https://github.com/FortAwesome/Font-Awesome/
+[submodule "system/submodules/zoom"]
+	path = system/submodules/zoom
+	url = https://github.com/jackmoore/zoom
+[submodule "system/submodules/underscore"]
+	path = system/submodules/underscore
+	url = https://github.com/jashkenas/underscore
+[submodule "system/submodules/URI.js"]
+	path = system/submodules/URI.js
+	url = https://github.com/medialize/URI.js
