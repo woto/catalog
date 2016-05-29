@@ -69,7 +69,7 @@ module ApplicationHelper
     content_tag :div, class: "custom-controls-stacked" do
       options_root(title).children.each do |value|
         custom_orange = @option_values[title] && @option_values[title].find{|el| el.id == value.id} ? "custom-orange" : ""
-        concat(content_tag(:label, class: "custom-control custom-checkbox #{custom_orange} js-filter-click-handler") do
+        concat(content_tag(:label, class: "custom-control custom-checkbox #{custom_orange}") do
           doc_count = @option_buckets[title].find{|bucket| bucket['key'] == value.id}.try(:[], 'doc_count')
           checkbox_opts = {class: 'js-filter-control js-filter-check-box custom-control-input'}
           checkbox_opts['disabled'] = 'disabled' unless doc_count

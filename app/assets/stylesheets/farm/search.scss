@@ -47,6 +47,18 @@
       background-color: $custom-control-active-orange-indicator-bg;
       @include box-shadow($custom-control-active-orange-indicator-box-shadow);
     }
+
+    &:disabled {
+      ~ .custom-control-indicator {
+        cursor: $custom-control-disabled-cursor;
+        background-color: $custom-control-disabled-indicator-bg;
+      }
+
+      ~ .custom-control-description {
+        color: $custom-control-disabled-description-color;
+        cursor: $custom-control-disabled-cursor;
+      }
+    }
   }
 }
 
@@ -58,7 +70,7 @@
 
 
 .product__card  {
-  border: none;
+  //border: none;
   z-index: 10;
 
   & .product__add-to-basket {
@@ -113,7 +125,7 @@
   font-size: 80%;
   top: 0;
   left: 0;
-  //display: none;
+  display: none;
   z-index: 30;
   padding: 10px;
   background: #555;

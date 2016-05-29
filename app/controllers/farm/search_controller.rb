@@ -181,7 +181,12 @@ class Farm::SearchController < Farm::ApplicationController
     @max_price_range = result['aggregations']['max_price']
 
     @products = Kaminari.paginate_array(result['hits']['hits'], total_count: result['hits']['total']).page(params[:page]).per(PER_PAGE)
-    render 'search/index'
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+
   end
 
   private

@@ -18,31 +18,7 @@
 
   <body>
 
-    <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
-      <div class="container-fluid">
-        <%= link_to 'Подъячево', farm_root_path, class: 'navbar-brand' %>
-        <%= render 'navbar_nav' %>
-        <ul class="nav navbar-nav pull-xs-right">
-          <li class="nav-item">
-            <%= link_to '#', class: "nav-link m-l-2 d-inline-block" do %>
-              <%= icon 'shopping-cart' %> Корзина
-            <% end %>
-          </li>
-        </ul>
-        <%= form_tag farm_search_path, method: 'get', class: 'pull-xs-right form-inline' do %>
-          <div class="form-group search-control">
-            <%= text_field_tag :q, params[:q], class: 'js-filter-control js-filter-text-input js-filter-search form-control search-control__input', placeholder: 'Введите строку для поиска' %>
-            <% if params[:q].present? %>
-              <%= link_to '', request.query_parameters.except(:q), class: "search-control__x" %>
-            <% end %>
-            <%= hash_to_hidden_fields(request.query_parameters.except(:q)) %>
-          </div>
-          <button class="btn btn-outline-secondary" type="submit">Поиск</button>
-        <% end %>
-
-      </form>
-      </div>
-    </nav>
+    <%= render 'navbar' %>
 
     <div class="yield">
       <%= yield %>

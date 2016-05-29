@@ -1,1 +1,4 @@
-$('#main').replaceWith("<%= j render 'farm/search/index' %>");
+{
+  "search-filters": "<%= j render "farm/search/search_filters" %>",
+  "filter-popup-hint": "<%= j link_to "Найдено #{@products.total_count} #{t 'product', count: @products.total_count}", request.query_parameters %> "
+}

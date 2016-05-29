@@ -1,0 +1,15 @@
+<nav class="navbar navbar-full navbar-dark bg-inverse m-b-2" role="navigation">
+
+  <button class="navbar-toggler hidden-sm-up text-muted pull-xs-right" type="button" data-toggle="collapse" data-target="#top-navbar" aria-controls="top-navbar" aria-expanded="false" aria-label="Toggle navigation">
+    &#9776;
+  </button>
+
+  <%= link_to 'Подъячево', farm_root_path, class: 'navbar-brand' %>
+
+  <div class="collapse navbar-toggleable-xs" id="top-navbar" aria-expanded="false">
+    <%= render 'shopping_cart' %>
+    <%= render 'navbar_nav' %>
+    <%= render 'search_form' %>
+  </div>
+
+</nav>

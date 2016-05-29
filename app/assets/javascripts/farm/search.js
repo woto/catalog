@@ -1,5 +1,3 @@
-//$(document).on('turbolinks:render', function(){
-
 var debounced_hide;
 var $popup_hint;
 
@@ -13,7 +11,7 @@ document.addEventListener("turbolinks:load", function() {
       display: 'none'
     })
   }
-  debounced_hide = _.debounce(hide, 5000);
+  debounced_hide = _.debounce(hide, 10000);
 })
 
 var get_filter_criteria = function(){
@@ -35,7 +33,8 @@ var get_filter_criteria = function(){
   $input = $('.js-filter-control.js-filter-text-input.js-filter-price.min-price-input');
   range_val = parseInt($input.data('price-range'), 10);
   input_val = parseInt($input.val(), 10);
-  param_val = parseInt(new URI().search(true)['min_price'], 10);
+  param_val = parseInt($input.data('price-param'), 10);
+  //param_val = parseInt(new URI().search(true)['min_price'], 10);
 
   if($input.data('changed')){
     if(input_val != range_val) {
@@ -51,7 +50,8 @@ var get_filter_criteria = function(){
   $input = $('.js-filter-control.js-filter-text-input.js-filter-price.max-price-input');
   range_val = parseInt($input.data('price-range'), 10);
   input_val = parseInt($input.val(), 10);
-  param_val = parseInt(new URI().search(true)['max_price'], 10);
+  param_val = parseInt($input.data('price-param'), 10);
+  //param_val = parseInt(new URI().search(true)['max_price'], 10);
 
   if($input.data('changed')){
     if(input_val != range_val) {
@@ -67,16 +67,24 @@ var get_filter_criteria = function(){
 }
 
 var show_filter_popup = function(handler){
-  $popup_hint.html("<a href='" + get_filter_criteria() + "'>Найдено X товаров. Показать</a>");
-  $popup_hint.css({
-    display: 'block',
-    left: $('.tether-width').offset().left + $('.tether-width').width(),
-    top: $(handler).offset().top + $(handler).outerHeight()/2 - $popup_hint.outerHeight()/2
+  $.ajax({
+    url: get_filter_criteria(),
+    type: "GET",
+    dataType: 'json'
+  }).done(function(data){
+    $popup_hint.css({
+      display: 'block',
+      left: $('.tether-width').offset().left + $('.tether-width').width(),
+      top: $(handler).offset().top + $(handler).outerHeight()/2 - $popup_hint.outerHeight()/2
+    });
+    $popup_hint.html(data['filter-popup-hint']);
+    $('.search-filters').html(data['search-filters']);
+    debounced_hide();
+    init_slider();
   });
-  debounced_hide();
 }
 
-$(document).on('click', '.js-filter-click-handler', function(){
+$(document).on('change', '.js-filter-check-box', function(){
   show_filter_popup(this);
 })
 
@@ -87,7 +95,7 @@ document.addEventListener("turbolinks:before-cache", function() {
   }
 })
 
-document.addEventListener("turbolinks:load", function() {
+var init_slider = function(){
   var slider = document.querySelector('.price-slider');
   if(slider) {
     var $min_price_input = $('.js-filter-control.js-filter-text-input.js-filter-price.min-price-input');
@@ -120,11 +128,9 @@ document.addEventListener("turbolinks:load", function() {
     price_slider.on('update', function( values, handle ) {
       var value = parseInt(values[handle]);
       if(!handle) {
-        //debugger;
         $min_price_input.val(value);
       }
       else {
-        //debugger;
         $max_price_input.val(value);
       }
     });
@@ -137,4 +143,8 @@ document.addEventListener("turbolinks:load", function() {
       price_slider.set([null, parseInt(this.value, 0)]);
     });
   }
+}
+
+document.addEventListener("turbolinks:load", function() {
+  init_slider();
 });

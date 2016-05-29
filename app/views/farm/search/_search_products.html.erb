@@ -1,0 +1,53 @@
+<%= render 'title' %>
+
+<div class="card-deck-wrapper">
+  <% products_per_slice = 3 %>
+
+  <% @products.each_slice(products_per_slice).with_index do |slice, index| %>
+
+    <% if index == 1 %>
+      <div class="card-deck">
+        <div class="card text-xs-center">
+          <div class="card-block">
+            <h3 class="card-title">Special title treatment</h3>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-outline-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="card-deck">
+      <% slice.each do |product| %>
+        <div class="card product__card">
+          <div class="product__hovered">
+            <%= link_to "в корзину", "#", class: 'product__add-to-basket btn btn-outline-success' %>
+          </div>
+          <%= link_to farm_product_path(product['_id']), class: 'product__link' do %>
+            <img class="card-img-top" data-src="holder.js/100px170/thumb" alt="Card image cap">
+            <div class="card-block">
+              <p class="product__title card-title"><%= product['_source']['title'] %></p>
+              <% if false %>
+              <p class="card-text">
+                <% @option_titles.each do |option_title| %>
+                  <%= Tree.where(id: product['_source'][option_title]).map{|el| el.es_body['title']} %>
+                <% end if @option_titles %>
+              </p>
+              <p class="card-text">
+                <%= Tree.find(product['_source']['category_ids']).map{|el| el.es_body['title']} %>
+              </p>
+              <% end %>
+              <p class="card-text" style="font-size: .8rem"><%= number_to_currency product['_source']['price'] %></p>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <% (products_per_slice - slice.size).times do |space| %>
+        <div class="card" style="visibility: hidden"></div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<%= paginate @products %>
+

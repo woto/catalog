@@ -12,11 +12,6 @@ $grid-gutter-width: 15px;
 @import "search";
 @import "welcome";
 
-
-body {
-  margin-top: 80px;
-}
-
 .jumbotron {
   padding-top: 6rem;
   padding-bottom: 6rem;
@@ -42,6 +37,8 @@ body {
 
 .search-control__input {
   padding-right: $input-height;
+  z-index: 10;
+  border-color: $btn-secondary-border;
 }
 
 .search-control__x {
@@ -51,9 +48,10 @@ body {
   background-size: ($input-height / 2) ($input-height / 2);
   background-image: $form-icon-danger;
   top: 0;
-  right: 0;
+  right: 5rem;
   height: $input-height;
   width: $input-height;
+  z-index: 20;
 }
 
 .categories-tree {
