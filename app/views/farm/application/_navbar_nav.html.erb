@@ -7,13 +7,8 @@
   <li class="nav-item <%= active %>">
     <%= link_to 'Магазин', farm_search_path, class: 'nav-link' %>
   </li>
-  <% active = params[:controller] == 'farm/articles' ? 'active' : '' %>
-  <li class="nav-item <%= active %>">
-    <a class="nav-link" href="#">Статьи</a>
-  </li>
   <% active = params[:controller] == 'farm/about' ? 'active' : '' %>
   <li class="nav-item <%= active %>">
-    <a class="nav-link" href="#">О нас</a>
+  <a class="nav-link" href="#">Информация</a>
   </li>
 </ul>
-

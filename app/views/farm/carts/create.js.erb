@@ -1,0 +1,10 @@
+var add_to_cart_button = $('.js-add-to-cart-button[data-id="<%= params[:product_id] %>"]');
+add_to_cart_button.html('Товар в корзине');
+add_to_cart_button.removeClass("btn-success btn-outline-success");
+add_to_cart_button.addClass("btn-warning");
+add_to_cart_button.attr('href', '<%= farm_cart_path %>');
+add_to_cart_button.removeAttr('data-remote');
+add_to_cart_button.removeAttr('data-method');
+
+var navbar_cart_link = $('.js-navbar__cart-link-count').text('<%= farm_products_in_cart.size %>');
+Turbolinks.clearCache();

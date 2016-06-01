@@ -21,7 +21,11 @@
       <% slice.each do |product| %>
         <div class="card product__card">
           <div class="product__hovered">
-            <%= link_to "в корзину", "#", class: 'product__add-to-basket btn btn-outline-success' %>
+            <% if farm_product_in_cart?(product['_id']) %>
+              <%= link_to 'Товар в корзине', farm_cart_path, class: 'product__add-to-basket btn btn-warning' %>
+            <% else %>
+              <%= link_to "в корзину", farm_cart_path(product_id: product['_id']), class: "js-add-to-cart-button product__add-to-basket btn btn-outline-success", data: {id: product['_id']}, remote: true, method: :post %>
+            <% end %>
           </div>
           <%= link_to farm_product_path(product['_id']), class: 'product__link' do %>
             <img class="card-img-top" data-src="holder.js/100px170/thumb" alt="Card image cap">
@@ -49,5 +53,5 @@
   <% end %>
 </div>
 
-<%= paginate @products %>
+<%= paginate @products, window: 2 %>
 

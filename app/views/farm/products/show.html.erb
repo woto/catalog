@@ -43,8 +43,12 @@
               </small>
               <h5 class="m-t-0"><%= number_to_currency @product.es_body['price'] %></h5>
               <div>
-                <%= link_to "#", class: "btn btn-success m-t-2 m-b-1" do %>
-                  <%= icon 'cart-arrow-down m-r-1' %>Добавить в корзину
+                <% if farm_product_in_cart? @product.id %>
+                  <%= link_to 'Товар в корзине', farm_cart_path, class: 'btn btn-warning m-t-2 m-b-1' %>
+                <% else %>
+                  <%= link_to farm_cart_path(product_id: @product), class: "js-add-to-cart-button btn btn-success m-t-2 m-b-1", data: {id: @product.id}, remote: true, method: :post do %>
+                    <%= icon 'cart-arrow-down m-r-1' %>Добавить в корзину
+                  <% end %>
                 <% end %>
               </div>
               <div>

@@ -1,8 +1,9 @@
 <ul class="nav navbar-nav pull-xs-right">
-  <li class="nav-item">
-    <%= link_to '#', class: "nav-link m-l-2 d-inline-block" do %>
+  <% active = params[:controller] == 'farm/carts' ? 'active' : '' %>
+  <li class="nav-item <%= active %>">
+    <%= link_to farm_cart_path, class: "nav-link m-l-2 d-inline-block js-navbar__cart-link" do %>
       <%= icon 'shopping-cart' %> Корзина
+      <span data-turbolinks-permanent id="cart-data-turbolinks-permanent" class="tag tag-pill tag-info js-navbar__cart-link-count"><%= farm_products_in_cart.size == 0 ? '' : farm_products_in_cart.size %></span>
     <% end %>
   </li>
 </ul>
-

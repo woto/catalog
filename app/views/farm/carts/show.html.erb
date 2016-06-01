@@ -1,0 +1,84 @@
+<%= container do %>
+  <%= row do %>
+    <div class="col-xl-2"></div>
+    <div class="col-xs-24">
+
+      <h2 class="m-b-2">
+        Корзина
+      </h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              #
+            </th>
+            <th>
+              Товар
+            </th>
+            <th>
+              Цена
+            </th>
+            <th>
+              Количество
+            </th>
+            <th>
+              Сумма
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @products.each_with_index do |product, index| %>
+            <tr>
+
+              <th scope="row">
+                <%= index %>
+              </th>
+
+              <td>
+                <%= product.es_body['title'] %>
+              </td>
+
+              <td>
+                <%= number_to_currency product.es_body['price'], precision: 0 %>
+              </td>
+
+              <td>
+                <form class="form-inline" style="width: 200px">
+                  <div class="form-group">
+                    <div class="input-group">
+                      <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button">-</button>
+                      </span>
+                      <input type="text" class="form-control" value="<%= session['cart_product_hashes'][product.id.to_s] %>">
+                      <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="button">+</button>
+                      </span>
+                      <span class="input-group-addon" id="basic-addon2"><%= product.es_body['unit'] %></span>
+                    </div>
+                  </div>
+                </form>
+
+              </td>
+
+              <td>
+                <%= number_to_currency product.es_body['price'] * session['cart_product_hashes'][product.id.to_s], precision: 0 %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th colspan="3">
+            </th>
+            <th>
+              <h5>Итого: </h5>
+            </th>
+            <th>
+              <%= number_to_currency @products.sum{|product| product.es_body['price'] * session['cart_product_hashes'][product.id.to_s]}, precision: 0 %>
+            </th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  <% end %>
+<% end %>

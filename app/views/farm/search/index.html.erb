@@ -1,1 +1,11 @@
-<%= render 'farm/search/index' %>
+<%= container do %>
+  <%= row do %>
+    <div class="col-xl-2"></div>
+    <div class="search-filters col-xs-24 col-lg-5 col-xl-4 col-md-24 tether-width" style="font-size: 95%">
+      <%= render 'farm/search/search_filters' %>
+    </div>
+    <div class="search-products col-xs-24 col-xl-16 col-lg-19 col-md-24">
+      <%= render 'farm/search/search_products' %>
+    </div>
+  <% end %>
+<% end %>

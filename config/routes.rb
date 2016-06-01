@@ -7,6 +7,7 @@ Rails.application.routes.draw do
 
   constraints domain: 'farm.ru' do
     scope module: 'farm', as: 'farm' do
+      resource :cart
       get 'search(/page/:page)', to: 'search#index', as: 'search'
       resources :products, only: [:show]
       root 'welcome#index'
