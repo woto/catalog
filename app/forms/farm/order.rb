@@ -1,5 +1,7 @@
 class Farm::Order
-  attr_accessor :name, :phone, :address
+  include ActiveModel::Model
+  include ActiveModel::Validations
 
-  validates :presence, :name, :phone, :address
+  attr_accessor :name, :phone, :address
+  validates_presence_of :name, :phone, :address
 end

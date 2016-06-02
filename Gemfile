@@ -49,7 +49,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'elasticsearch', git: 'git://github.com/elasticsearch/elasticsearch-ruby.git'
 
-gem 'simple_form'
 gem 'closure_tree', github: 'mceachen/closure_tree'
 
 source 'https://rails-assets.org' do
@@ -63,3 +62,4 @@ gem 'rails-i18n'
 # https://github.com/sferik/rails_admin/issues/2628
 gem 'kaminari', github: 'amatsuda/kaminari'
 gem 'woto_helpers', path: '../woto_helpers'
+gem 'simple_form', path: '../simple_form'

@@ -75,34 +75,21 @@
       </div>
 
       <%= container class: "m-t-3" do %>
+        <%= row do %>
+          <div class="col-xs-24 col-sm-20 offset-sm-2 col-md-18 offset-md-3 col-lg-16 offset-lg-4 col-xl-14 offset-xl-5">
+            <%= container do %>
+              <%= simple_form_for @order, url: farm_order_path, wrapper: :horizontal_form do |f| %>
+                <%= f.error_notification %>
+                <%= f.input :name, class: 'form-control', label: 'Контактное лицо', required: false %>
+                <%= f.input :phone, class: 'form-control', type: 'tel', label: 'Телефон', required: false %>
+                <%= f.input :address, class: 'form-control', input_html: {rows: '4'}, placeholder: '', as: :text, label: 'Адрес доставки', required: false %>
 
-        <form>
-          <div class="form-group row">
-            <label for="name" class="col-xs-24 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-form-label"><strong>Контактное лицо</strong></label>
-            <div class="col-xs-24 col-sm-16 col-md-14 col-lg-12 col-xl-10">
-              <input class="form-control" type="text" placeholder="Представьтесь пожалуйста">
+                <%= f.submit "Оформить заказ", class: 'btn btn-success pull-xs-right' %>
+                <small class="form-text text-muted">С условиями доставки вы можете ознакомиться на странице <a href="#">Информация</a></small>
+              <% end %>
             </div>
-          </div>
-          <div class="form-group row">
-            <label for="phone" class="col-xs-24 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-form-label"><strong>Телефон</strong></label>
-            <div class="col-xs-24 col-sm-16 col-md-14 col-lg-12 col-xl-10">
-              <input type="phone" class="form-control" type="tel" placeholder="Укажите контактный номер телефона">
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="address" class="col-xs-24 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-form-label"><strong>Адрес доставки</strong></label>
-            <div class="col-xs-24 col-sm-16 col-md-14 col-lg-12 col-xl-10">
-              <textarea class="form-control" rows="5" placeholder="С условиями доставки вы можете ознакомиться на странице Информация"></textarea>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-xs-24 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-form-label"></div>
-            <div class="col-xs-24 col-sm-16 col-md-14 col-lg-12 col-xl-10">
-              <input type="submit" class="btn btn-success pull-xs-right" value="Оформить заказ">
-            </div>
-          </div>
-        </form>
-
+          <% end %>
+        <% end %>
       <% end %>
     </div>
   <% end %>

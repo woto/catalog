@@ -31,6 +31,7 @@ class Farm::CartsController < Farm::ApplicationController
 
   def show
     @products = farm_products_in_cart
+    @order = Farm::Order.new
   end
 
 end
