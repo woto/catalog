@@ -26,6 +26,7 @@
 //
 //= require farm/products
 //= require farm/search
+//= require farm/cart
 
 $(document).on('turbolinks:load', function(){
   Holder.addTheme("thumb", { background: "#55595c", foreground: "#eceeef", text: "Thumbnail" });
