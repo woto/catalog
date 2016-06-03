@@ -1,4 +1,4 @@
-class Farm::SellerMailer < Farm::ApplicationMailer
+class Farm::BuyerMailer < ApplicationMailer
 
   def order_email(products, order, session_hash, farm_total_cost_of_products_in_cart)
     @products = products

@@ -3,18 +3,10 @@
     <div class="col-xl-2"></div>
     <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24 col-xl-20">
       <h2 class="m-b-2">Заказ оформлен</h2>
-      Благодарим вас за оформление заказа в нашем интернет магазине. В ближайшее время мы с вами свяжемся для согласования заказа.
-      <h5 class="m-t-3 m-b-1">Заказанные товары</h5>
+      <p class="m-b-3 bg-success p-a-1">Благодарим вас за оформление заказа в нашем интернет магазине. В ближайшее время мы с вами свяжемся для согласования заказа. Копию заказа мы отправили на ваш email: <%= @order.email %></p>
 
-      <% farm_products_in_cart.each do |product| %>
-        <div><%= product %></div>
-      <% end %>
-
-      <h5 class="m-t-3 m-b-1">Детали заказа</h5>
-
-      <p><%= @order.name %></p>
-      <p><%= @order.phone %></p>
-      <p><%= @order.address %></p>
+      <%= render 'order_products' %>
+      <%= render 'order_buyer' %>
 
     </div>
   <% end %>

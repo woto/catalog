@@ -1,0 +1,52 @@
+<div class="table-responsive">
+  <table class="table table-striped js-cart-products">
+    <thead class="thead-inverse">
+      <tr>
+        <th>
+          Товар
+        </th>
+        <th>
+          Цена
+        </th>
+        <th>
+          Количество
+        </th>
+        <th style="min-width: 130px">
+          Сумма
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @products.each do |product| %>
+        <tr>
+          <td>
+            <%= product.es_body['title'] %>
+          </td>
+
+          <td class="text-nowrap">
+            <%= number_to_currency product.es_body['price'], precision: 0 %>
+          </td>
+
+          <td>
+            <%= @session_hash['cart_product_hashes'][product.id.to_s] %> <%= product.es_body['unit'] %>
+          </td>
+
+          <td class="text-nowrap">
+            <%= number_to_currency product.es_body['price'] * @session_hash['cart_product_hashes'][product.id.to_s], precision: 0 %>
+          </td>
+
+        </tr>
+      <% end %>
+    </tbody>
+    <tfoot class="table-warning">
+      <tr>
+        <th colspan="5">
+          <div class="pull-right">
+            Итого: <%= number_to_currency @farm_total_cost_of_products_in_cart, precision: 0 %>
+          </div>
+        </th>
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
