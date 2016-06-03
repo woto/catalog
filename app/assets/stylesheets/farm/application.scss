@@ -12,6 +12,10 @@ $grid-gutter-width: 15px;
 @import "search";
 @import "welcome";
 
+.yield {
+  min-height: 400px;
+}
+
 .jumbotron {
   padding-top: 6rem;
   padding-bottom: 6rem;

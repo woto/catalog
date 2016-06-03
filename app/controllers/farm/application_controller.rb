@@ -20,7 +20,7 @@ class Farm::ApplicationController < ApplicationController
     if session['cart_product_hashes']
       farm_products.where(id: session['cart_product_hashes'].keys)
     else
-      []
+      farm_products.none
     end
   end
 

@@ -1,0 +1,9 @@
+<%= simple_form_for @order, url: farm_order_path, wrapper: :horizontal_form, remote: true do |f| %>
+  <%= f.input :name, class: 'form-control', label: 'Контактное лицо', required: false %>
+  <%= f.input :phone, class: 'form-control', type: 'tel', label: 'Телефон', required: false %>
+  <%= f.input :email, class: 'form-control', type: 'email', label: 'Электронная почта', required: false %>
+  <%= f.input :address, class: 'form-control', input_html: {rows: '4'}, placeholder: '', as: :text, label: 'Адрес доставки', required: false %>
+
+  <%= f.submit "Оформить заказ", class: 'btn btn-success pull-xs-right' %>
+  <small class="form-text text-muted">С условиями доставки вы можете ознакомиться на странице <a href="#">Информация</a></small>
+<% end %>

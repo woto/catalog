@@ -63,3 +63,4 @@ gem 'rails-i18n'
 gem 'kaminari', github: 'amatsuda/kaminari'
 gem 'woto_helpers', path: '../woto_helpers'
 gem 'simple_form', path: '../simple_form'
+gem 'dotenv-rails', :groups => [:development, :test]

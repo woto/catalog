@@ -32,6 +32,11 @@ class Farm::CartsController < Farm::ApplicationController
   def show
     @products = farm_products_in_cart
     @order = Farm::Order.new
+    if @products.exists?
+      render 'show'
+    else
+      render 'empty'
+    end
   end
 
 end

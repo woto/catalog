@@ -2,7 +2,7 @@ document.addEventListener("turbolinks:before-cache", function() {
   $('.slider-for, .slider-nav').each(function(){
     this.slick.unslick();
   })
-})
+});
 
 $(document).on('turbolinks:load', function(){
    $('.slider-for').slick({

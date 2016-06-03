@@ -1,96 +1,79 @@
-<%= container do %>
-  <%= row do %>
-    <div class="col-xl-2"></div>
-    <div class="col-xs-24 col-sm-24 col-md-24 col-lg-24 col-xl-20">
+<%= render layout: 'farm/carts/cart_layout' do %>
+  <div class="table-responsive">
+    <table class="table table-striped js-cart-products">
+      <thead class="thead-inverse">
+        <tr>
+          <th>
+            Товар
+          </th>
+          <th>
+            Цена
+          </th>
+          <th>
+            Количество
+          </th>
+          <th style="min-width: 130px">
+            Сумма
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each_with_index do |product, index| %>
+          <tr class="js-cart-products__row" data-id="<%= product.id %>">
+            <td>
+              <%= product.es_body['title'] %>
+            </td>
 
-      <h2 class="m-b-2">
-        Корзина
-      </h2>
-      <div class="table-responsive">
-        <table class="table table-striped js-cart-products">
-          <thead class="thead-inverse">
-            <tr>
-              <th>
-                Товар
-              </th>
-              <th>
-                Цена
-              </th>
-              <th>
-                Количество
-              </th>
-              <th style="min-width: 130px">
-                Сумма
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @products.each_with_index do |product, index| %>
-              <tr class="js-cart-products__row" data-id="<%= product.id %>">
-                <td>
-                  <%= product.es_body['title'] %>
-                </td>
+            <td class="text-nowrap">
+              <%= number_to_currency product.es_body['price'], precision: 0 %>
+            </td>
 
-                <td class="text-nowrap">
-                  <%= number_to_currency product.es_body['price'], precision: 0 %>
-                </td>
+            <td>
+              <div class="form-group" style="width: 140px;">
 
-                <td>
-                  <div class="form-group" style="width: 140px;">
-
-                    <div class="input-group input-group-sm">
-                      <span class="input-group-btn">
-                        <button class="btn btn-secondary js-cart-products__calc" data-operator="-" type="button">-</button>
-                      </span>
-                      <%= text_field_tag "", session['cart_product_hashes'][product.id.to_s], class: "form-control js-cart-products__input-count", readonly: "readonly" %>
-                      <span class="input-group-addon"><small><%= product.es_body['unit'] %></small></span>
-                      <span class="input-group-btn">
-                        <button class="btn btn-secondary js-cart-products__calc" data-operator="+" type="button">+</button>
-                      </span>
-                    </div>
-
-                  </div>
-                </td>
-
-                <td class="text-nowrap">
-                  <span class="js-cart-products__sum">
-                    <%= number_to_currency product.es_body['price'] * session['cart_product_hashes'][product.id.to_s], precision: 0 %>
+                <div class="input-group input-group-sm">
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary js-cart-products__calc" data-operator="-" type="button">-</button>
                   </span>
-                </td>
-
-              </tr>
-            <% end %>
-          </tbody>
-          <tfoot class="table-warning">
-            <tr>
-              <th colspan="5">
-                <div class="pull-right">
-                  Итого: 
-                  <span id="js-cart-products__total"><%= number_to_currency farm_total_cost_of_products_in_cart, precision: 0 %></span>
+                  <%= text_field_tag "", session['cart_product_hashes'][product.id.to_s], class: "form-control js-cart-products__input-count", readonly: "readonly" %>
+                  <span class="input-group-addon"><small><%= product.es_body['unit'] %></small></span>
+                  <span class="input-group-btn">
+                    <button class="btn btn-secondary js-cart-products__calc" data-operator="+" type="button">+</button>
+                  </span>
                 </div>
-              </th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
 
-      <%= container class: "m-t-3" do %>
-        <%= row do %>
-          <div class="col-xs-24 col-sm-20 offset-sm-2 col-md-18 offset-md-3 col-lg-16 offset-lg-4 col-xl-14 offset-xl-5">
-            <%= container do %>
-              <%= simple_form_for @order, url: farm_order_path, wrapper: :horizontal_form do |f| %>
-                <%= f.error_notification %>
-                <%= f.input :name, class: 'form-control', label: 'Контактное лицо', required: false %>
-                <%= f.input :phone, class: 'form-control', type: 'tel', label: 'Телефон', required: false %>
-                <%= f.input :address, class: 'form-control', input_html: {rows: '4'}, placeholder: '', as: :text, label: 'Адрес доставки', required: false %>
+              </div>
+            </td>
 
-                <%= f.submit "Оформить заказ", class: 'btn btn-success pull-xs-right' %>
-                <small class="form-text text-muted">С условиями доставки вы можете ознакомиться на странице <a href="#">Информация</a></small>
-              <% end %>
-            </div>
-          <% end %>
+            <td class="text-nowrap">
+              <span class="js-cart-products__sum">
+                <%= number_to_currency product.es_body['price'] * session['cart_product_hashes'][product.id.to_s], precision: 0 %>
+              </span>
+            </td>
+
+          </tr>
         <% end %>
+      </tbody>
+      <tfoot class="table-warning">
+        <tr>
+          <th colspan="5">
+            <div class="pull-right">
+              Итого: 
+              <span id="js-cart-products__total"><%= number_to_currency farm_total_cost_of_products_in_cart, precision: 0 %></span>
+            </div>
+          </th>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <%= container class: "m-t-3" do %>
+    <%= row do %>
+      <div class="col-xs-24 col-sm-20 offset-sm-2 col-md-18 offset-md-3 col-lg-16 offset-lg-4 col-xl-14 offset-xl-5">
+        <%= container do %>
+          <%= render 'farm/orders/form' %>
+        </div>
       <% end %>
-    </div>
+    <% end %>
   <% end %>
 <% end %>

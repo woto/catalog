@@ -10,8 +10,15 @@ var update_input_count = function(){
     },
     dataType: 'json'
   }).done(function(data){
-    $('#js-cart-products__total').text(data['total'])
-    $('.js-cart-products__row[data-id="'+id+'"] .js-cart-products__sum').text(data['sum'])
+    if(data.farm_total_cost_of_products_in_cart.integer == 0) {
+      update_navbar_cart_link('');
+      Turbolinks.clearCache();
+      Turbolinks.visit('/cart');
+    } else {
+      update_navbar_cart_link(data.farm_products_in_cart_size)
+      $('#js-cart-products__total').text(data.farm_total_cost_of_products_in_cart.string)
+      $('.js-cart-products__row[data-id="'+id+'"] .js-cart-products__sum').text(data.farm_products_sum)
+    }
   });
 }
 
