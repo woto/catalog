@@ -2,7 +2,7 @@
 
 <h1>Products</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Id</th>
@@ -27,6 +27,8 @@
     <% end %>
   </tbody>
 </table>
+
+<%= paginate @products %>
 
 <br>
 
