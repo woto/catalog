@@ -34,5 +34,4 @@ class Farm::ApplicationController < ApplicationController
     end
   end
 
-  
 end

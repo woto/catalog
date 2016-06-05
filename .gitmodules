@@ -19,3 +19,6 @@
 [submodule "system/submodules/jsoneditor"]
 	path = system/submodules/jsoneditor
 	url = https://github.com/josdejong/jsoneditor
+[submodule "system/submodules/URI.js"]
+	path = system/submodules/URI.js
+	url = https://github.com/medialize/URI.js

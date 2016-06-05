@@ -3,6 +3,7 @@
 //= require turbolinks
 //
 //= require underscore/underscore
+//= require URI.js/src/URI.js
 //= require holderjs
 //= require tether
 //

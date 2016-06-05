@@ -5,11 +5,11 @@ class Farm::WelcomeController < Farm::ApplicationController
 
     body = {
       aggregations: {
-         animal_ids: {
-            terms: {
-               field: "animal_ids"
-            }
-         }
+        "animal_ids": {
+          terms: {
+            field: "properties.animal_ids"
+          }
+        }
       }
     }
 

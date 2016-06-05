@@ -75,7 +75,7 @@ class Farm::SearchController < Farm::ApplicationController
         aggregations: {
           option_title => {
             terms: {
-              field: option_title,
+              field: "properties.#{option_title}",
               size: 100
             }
           }
@@ -88,23 +88,23 @@ class Farm::SearchController < Farm::ApplicationController
       if @option_values[option_title]
 
         add_filters_for_aggregations(body, :category_ids,
-          terms: { option_title => @option_values[option_title].map(&:id) })
+          terms: { "properties.#{option_title}" => @option_values[option_title].map(&:id) })
 
         add_filters_for_aggregations(body, :min_price,
-          terms: { option_title => @option_values[option_title].map(&:id) })
+          terms: { "properties.#{option_title}" => @option_values[option_title].map(&:id) })
 
         add_filters_for_aggregations(body, :max_price,
-          terms: { option_title => @option_values[option_title].map(&:id) })
+          terms: { "properties.#{option_title}" => @option_values[option_title].map(&:id) })
 
         other_option_titles = @option_titles - [option_title]
 
         other_option_titles.each do |other_option_title|
           add_filters_for_aggregations(body, other_option_title,
-            terms: { option_title => @option_values[option_title].map(&:id) })
+            terms: { "properties.#{option_title}" => @option_values[option_title].map(&:id) })
         end if other_option_titles
 
         add_post_filters(body,
-          terms: { option_title => @option_values[option_title].map(&:id) })
+          terms: { "properties.#{option_title}" => @option_values[option_title].map(&:id) })
 
       end
 
