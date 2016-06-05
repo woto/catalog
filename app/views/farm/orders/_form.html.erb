@@ -5,5 +5,5 @@
   <%= f.input :address, class: 'form-control', input_html: {rows: '4'}, placeholder: '', as: :text, label: 'Адрес доставки', required: false %>
 
   <%= f.submit "Оформить заказ", class: 'btn btn-success pull-xs-right' %>
-  <small class="form-text text-muted">С условиями доставки вы можете ознакомиться на странице <a href="#">Информация</a></small>
+  <small class="form-text text-muted">С условиями доставки вы можете ознакомиться на странице <%= link_to "Информация", farm_about_path %></small>
 <% end %>

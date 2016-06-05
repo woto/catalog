@@ -9,6 +9,6 @@
   </li>
   <% active = params[:controller] == 'farm/about' ? 'active' : '' %>
   <li class="nav-item <%= active %>">
-  <a class="nav-link" href="#">Информация</a>
+    <%= link_to 'Информация', farm_about_path, class: 'nav-link' %>
   </li>
 </ul>
