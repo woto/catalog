@@ -3,7 +3,6 @@
 //= require turbolinks
 //
 //= require underscore/underscore
-//= require URI.js/src/URI.js
 //= require holderjs
 //= require tether
 //
@@ -20,7 +19,6 @@
 //= require bootstrap/js/dist/popover
 //
 //= require noUiSlider/distribute/nouislider
-//= require wnumb/wNumb
 //= require slick/slick/slick
 //= require zoom/jquery.zoom
 //

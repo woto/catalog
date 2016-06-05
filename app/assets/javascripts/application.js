@@ -7,6 +7,8 @@
 //
 //= require cable
 //
+//= require jsoneditor/dist/jsoneditor.min
+//
 //= require bootstrap/js/dist/util
 //= require bootstrap/js/dist/alert
 //= require bootstrap/js/dist/button

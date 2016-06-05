@@ -1,25 +1,24 @@
 <div id="jsoneditor" style="width: 600px; height: 400px;"></div>
 <br />
-<br />
-<label>es_index</label>
-<input type="text" id="es_index" value="<%= tree.es_index %>">
-<br />
-<br />
-<label>es_type</label>
-<input type="text" id="es_type" value="<%= tree.es_type %>">
-<br />
-<br />
-<label>parent_id</label>
-<input type="text" id="parent_id" value="<%= tree.parent_id %>">
-<br />
-<br />
-<label>sort_order</label>
-<input type="text" id="sort_order" value="<%= tree.sort_order %>">
-<br />
-<br />
+<div class="form-group">
+  <label>es_index</label>
+  <input type="text" class="form-control" id="es_index" value="<%= tree.es_index %>">
+</div>
+<div class="form-group">
+  <label>es_type</label>
+  <input type="text" class="form-control" id="es_type" value="<%= tree.es_type %>">
+</div>
+<div class="form-group">
+  <label>parent_id</label>
+  <input type="text" class="form-control" id="parent_id" value="<%= tree.parent_id %>">
+</div>
+<div class="form-group">
+  <label>sort_order</label>
+  <input type="text" class="form-control" id="sort_order" value="<%= tree.sort_order %>">
+</div>
 <div id="formresult"></div>
 <br />
-<button id="sendJSON">Send JSON</button>
+<button class="btn btn-primary" id="sendJSON">Send JSON</button>
 <br />
 <br />
 

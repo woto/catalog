@@ -41,7 +41,11 @@
                 <%= Tree.find(product['_source']['category_ids']).map{|el| el.es_body['title']} %>
               </p>
               <% end %>
-              <p class="card-text" style="font-size: .8rem"><%= number_to_currency product['_source']['price'] %></p>
+              <p class="card-text" style="font-size: .8rem">
+                <%= number_to_currency product['_source']['price'] %>
+                за 1
+                <%= product['_source']['unit'] %>.
+              </p>
             </div>
           <% end %>
         </div>

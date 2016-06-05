@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :trees
-  #concern :paginatable do
-  #  get '(page/:page)', :action => :index, :on => :collection, :as => ''
-  #end
-
   constraints domain: 'farm.ru' do
     scope module: 'farm', as: 'farm' do
       get 'about', to: 'about#show'
@@ -16,7 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :trees
   resources :products
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root 'products#index'
 end

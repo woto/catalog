@@ -12,13 +12,24 @@
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-
-    <link href="/bower_components/jsoneditor/dist/jsoneditor.min.css" rel="stylesheet" type="text/css">
-    <script src="/bower_components/jsoneditor/dist/jsoneditor.min.js"></script>
-    <link href="/bower_components/jsoneditor/examples/css/darktheme.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
+
+    <nav class="navbar navbar-light bg-faded">
+      <a class="navbar-brand" href="#">Catalog</a>
+      <ul class="nav navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/products">Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/trees">Trees</a>
+        </li>
+      </ul>
+    </nav>
 
     <div class="container">
       <div class="row">

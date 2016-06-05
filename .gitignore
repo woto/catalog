@@ -28,10 +28,3 @@ Session.vim
 *~
 # auto-generated tag files
 tags
-
-########## NODE
-
-# Dependency directories
-node_modules
-jspm_packages
-bower_components

@@ -2,7 +2,7 @@
 
 <h1>Trees</h1>
 
-<table>
+<table class="table table-striped">
   <thead>
     <tr>
       <th>Id</th>
@@ -25,7 +25,6 @@
         <td><%= tree.parent_id %></td>
         <td><%= tree.sort_order %></td>
         <td><%= link_to_unless tree.leaf?, 'Index', trees_path(id: tree) %></td>
-        <td><%= link_to 'Show', tree %></td>
         <td><%= link_to 'Edit', edit_tree_path(tree) %></td>
         <td><%= link_to 'Destroy', tree, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

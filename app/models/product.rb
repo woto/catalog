@@ -3,7 +3,7 @@ class Product < ApplicationRecord
   after_save :store_in_es
 
   def store_in_es
-    $client.index index: es_index, type: es_type, id: id, body: es_body
+    self.update_column :es_response, $client.index(index: es_index, type: es_type, id: id, body: es_body)
   end
 
   def self.reindex!
