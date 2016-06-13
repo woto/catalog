@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  constraints domain: 'farm.ru' do
+  constraints domain: 'podychevo.ru' do
     scope module: 'farm', as: 'farm' do
       get 'about', to: 'about#show'
       resource :order, only: [:create]
@@ -13,5 +13,6 @@ Rails.application.routes.draw do
 
   resources :trees
   resources :products
+  resources :uploads
   root 'products#index'
 end

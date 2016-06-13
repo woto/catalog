@@ -28,12 +28,17 @@
         <li class="nav-item">
           <a class="nav-link" href="/trees">Trees</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/uploads">Uploads</a>
+        </li>
       </ul>
     </nav>
 
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
+          <div class="alert alert-success m-t-1" role="alert"><%= notice %></div>
+          <div class="alert alert-danger m-t-1" role="alert"><%= alert %></div>
           <%= yield %>
         </div>
       </div>

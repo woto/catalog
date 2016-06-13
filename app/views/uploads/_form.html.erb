@@ -1,0 +1,4 @@
+<%= simple_form_for(upload, multipart: true) do |f| %>
+  <%= f.input :file, as: :file %>
+  <%= f.submit 'Загрузить', class: 'btn btn-primary' %>
+<% end %>
