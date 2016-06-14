@@ -11,8 +11,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :trees
-  resources :products
-  resources :uploads
-  root 'products#index'
+  constraints host: '192.168.1.6', port: '3000' do
+    resources :trees
+    resources :products
+    resources :uploads
+    root 'products#index'
+  end
+
 end

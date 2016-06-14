@@ -7,7 +7,7 @@ class UploadsController < ApplicationController
   # GET /uploads
   # GET /uploads.json
   def index
-    @uploads = Upload.page params[:page]
+    @uploads = Upload.all.reverse_order.page params[:page]
   end
 
   # GET /uploads/1
@@ -29,7 +29,7 @@ class UploadsController < ApplicationController
   def create
     uploaded_io = params[:upload][:file]
 
-    @upload = Upload.create(file: uploaded_io.original_filename)
+    @upload = Upload.create(file: uploaded_io.original_filename, es_index: upload_params['es_index'])
     path = Rails.root.join(UPLOADS_PATH, @upload.id.to_s, uploaded_io.original_filename)
 
     dirname = File.dirname(path)
@@ -74,6 +74,6 @@ class UploadsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def upload_params
-      params.require(:upload).permit(:file)
+      params.require(:upload).permit(:file, :es_index)
     end
 end

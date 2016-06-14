@@ -28,19 +28,13 @@
             <% end %>
           </div>
           <%= link_to farm_product_path(product['_id']), class: 'product__link' do %>
-            <img class="card-img-top" data-src="holder.js/100px170/thumb" alt="Card image cap">
+            <% if product['_source']['images'] %>
+              <%= image_tag product['_source']['images'].first['small'], class: "card-img-top img-fluid", alt: product['_source']['title'] %>
+            <% else %>
+              <img class="card-img-top" data-src="holder.js/100px170/thumb" alt="Card image cap">
+            <% end %>
             <div class="card-block">
               <p class="product__title card-title"><%= product['_source']['title'] %></p>
-              <% if false %>
-              <p class="card-text">
-                <% @option_titles.each do |option_title| %>
-                  <%= Tree.where(id: product['_source'][option_title]).map{|el| el.es_body['title']} %>
-                <% end if @option_titles %>
-              </p>
-              <p class="card-text">
-                <%= Tree.find(product['_source']['category_ids']).map{|el| el.es_body['title']} %>
-              </p>
-              <% end %>
               <p class="card-text" style="font-size: .8rem">
                 <%= number_to_currency product['_source']['price'] %>
                 за 1

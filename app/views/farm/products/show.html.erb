@@ -20,18 +20,17 @@
           <div class="col-xs-24 col-xl-16 col-lg-17 vcenter">
             <div style="padding: 0 4rem;">
               <div class="slider slider-for">
-                <!--
-                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_2_v1.jpg"></div>
-                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
-                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
-                <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/C/O/CO011AUFZ698_4_v2.jpg"></div>
-                <div><img class="img-fluid" src="http://pi0.lmcdn.ru/img389x562/S/P/SP014BWIPP10_9_v1.jpg"></div>
-                -->
-                <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_2_v1.jpg"></div>
-                <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_3_v1.jpg"></div>
-                <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_3_v1.jpg"></div>
-                <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi1.lmcdn.ru/product/C/O/CO011AUFZ698_4_v2.jpg"></div>
-                <div class="tmp"><img style="max-width: 320px" class=" m-x-auto photo img-fluid" src="http://pi0.lmcdn.ru/product/S/P/SP014BWIPP10_9_v1.jpg"></div>
+                <% if @product.es_body['images'] %>
+                  <% @product.es_body['images'].each do |image| %>
+                    <%= content_tag :div, class: 'tmp' do %>
+                      <%= image_tag(image['big'], class: 'img-fluid', style: 'max-height: 470px', class: 'm-x-auto photo img-fluid')  %>
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  <%= content_tag :div, class: 'tmp' do %>
+                    <%= image_tag('not_available.png', class: 'img-fluid', style: 'max-height: 470px', class: 'm-x-auto photo img-fluid')  %>
+                  <% end %>
+                <% end %>
               </div>
             </div>
           </div><!--
@@ -51,34 +50,30 @@
                   <% end %>
                 <% end %>
               </div>
+
               <div>
                 <button type="button" class="btn btn-sm btn-secondary">Задать вопрос</button>
               </div>
               <div class="m-y-2">
-                <strong class="text-muted m-y-1">Другие фото товара</strong>
-                <div class="slider slider-nav m-y-1">
-                  <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_2_v1.jpg"></div>
-                  <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
-                  <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg"></div>
-                  <div><img class="img-fluid" src="http://pi1.lmcdn.ru/img389x562/C/O/CO011AUFZ698_4_v2.jpg"></div>
-                  <div><img class="img-fluid" src="http://pi0.lmcdn.ru/img389x562/S/P/SP014BWIPP10_9_v1.jpg"></div>
-                </div>
-              </div>
-              <% if false %>
-              <% if @animals %>
-                <strong> Подходит для </strong>
-                <ul>
-                <% @animals.each do |animal| %>
-                  <li><%= animal.es_body['title'] %></li>
+                <% if @product.es_body['images'] && @product.es_body['images'].size > 1 %>
+                  <strong class="text-muted m-y-1">Другие фото товара</strong>
+                  <div class="slider slider-nav m-y-1">
+                    <% @product.es_body['images'].each do |image| %>
+                      <%= content_tag :div do %>
+                        <%= image_tag image['small'], class: 'img-fluid' %>
+                      <% end %>
+                    <% end %>
+                  </div>
                 <% end %>
-                </ul>
-              <% end %>
-              <% end %>
+              </div>
+
+              <div class="m-y-2">
+              <%= link_to 'Редактировать товар', edit_product_url(@product) %>
+              </div>
+
             </div>
           </div>
         <% end %>
-
-        <%# image_tag(@product.es_body['thumbnail'] || 'not_available.png', class: 'img-fluid')  %>
 
       <% end %>
 
