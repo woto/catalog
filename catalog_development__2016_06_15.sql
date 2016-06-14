@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.1
--- Dumped by pg_dump version 9.5.1
+-- Dumped from database version 9.5.3
+-- Dumped by pg_dump version 9.5.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -48,43 +48,6 @@ CREATE TABLE ar_internal_metadata (
 ALTER TABLE ar_internal_metadata OWNER TO woto;
 
 --
--- Name: categories; Type: TABLE; Schema: public; Owner: woto
---
-
-CREATE TABLE categories (
-    id integer NOT NULL,
-    title character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    parent_id integer,
-    es_body json
-);
-
-
-ALTER TABLE categories OWNER TO woto;
-
---
--- Name: categories_id_seq; Type: SEQUENCE; Schema: public; Owner: woto
---
-
-CREATE SEQUENCE categories_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE categories_id_seq OWNER TO woto;
-
---
--- Name: categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: woto
---
-
-ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
-
-
---
 -- Name: category_hierarchies; Type: TABLE; Schema: public; Owner: woto
 --
 
@@ -96,42 +59,6 @@ CREATE TABLE category_hierarchies (
 
 
 ALTER TABLE category_hierarchies OWNER TO woto;
-
---
--- Name: indices; Type: TABLE; Schema: public; Owner: woto
---
-
-CREATE TABLE indices (
-    id integer NOT NULL,
-    es_body json,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    es_index character varying
-);
-
-
-ALTER TABLE indices OWNER TO woto;
-
---
--- Name: indices_id_seq; Type: SEQUENCE; Schema: public; Owner: woto
---
-
-CREATE SEQUENCE indices_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE indices_id_seq OWNER TO woto;
-
---
--- Name: indices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: woto
---
-
-ALTER SEQUENCE indices_id_seq OWNED BY indices.id;
-
 
 --
 -- Name: products; Type: TABLE; Schema: public; Owner: woto
@@ -270,17 +197,39 @@ ALTER SEQUENCE trees_id_seq OWNED BY trees.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: woto
+-- Name: uploads; Type: TABLE; Schema: public; Owner: woto
 --
 
-ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
+CREATE TABLE uploads (
+    id integer NOT NULL,
+    file character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    es_index character varying
+);
 
+
+ALTER TABLE uploads OWNER TO woto;
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: woto
+-- Name: uploads_id_seq; Type: SEQUENCE; Schema: public; Owner: woto
 --
 
-ALTER TABLE ONLY indices ALTER COLUMN id SET DEFAULT nextval('indices_id_seq'::regclass);
+CREATE SEQUENCE uploads_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE uploads_id_seq OWNER TO woto;
+
+--
+-- Name: uploads_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: woto
+--
+
+ALTER SEQUENCE uploads_id_seq OWNED BY uploads.id;
 
 
 --
@@ -305,27 +254,19 @@ ALTER TABLE ONLY trees ALTER COLUMN id SET DEFAULT nextval('trees_id_seq'::regcl
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: woto
+--
+
+ALTER TABLE ONLY uploads ALTER COLUMN id SET DEFAULT nextval('uploads_id_seq'::regclass);
+
+
+--
 -- Data for Name: ar_internal_metadata; Type: TABLE DATA; Schema: public; Owner: woto
 --
 
 COPY ar_internal_metadata (key, value, created_at, updated_at) FROM stdin;
 environment	development	2016-05-17 03:43:33.766051	2016-05-17 03:43:33.766051
 \.
-
-
---
--- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: woto
---
-
-COPY categories (id, title, created_at, updated_at, parent_id, es_body) FROM stdin;
-\.
-
-
---
--- Name: categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: woto
---
-
-SELECT pg_catalog.setval('categories_id_seq', 1, false);
 
 
 --
@@ -337,37 +278,18 @@ COPY category_hierarchies (ancestor_id, descendant_id, generations) FROM stdin;
 
 
 --
--- Data for Name: indices; Type: TABLE DATA; Schema: public; Owner: woto
---
-
-COPY indices (id, es_body, created_at, updated_at, es_index) FROM stdin;
-\.
-
-
---
--- Name: indices_id_seq; Type: SEQUENCE SET; Schema: public; Owner: woto
---
-
-SELECT pg_catalog.setval('indices_id_seq', 1, false);
-
-
---
 -- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: woto
 --
 
 COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_response) FROM stdin;
-2461	2016-05-26 00:42:24.983996	2016-06-05 19:44:11.111021	farm	products	{"category_ids":[15,59],"title":"Е2019 100 ламп, цветные лампы","price":405,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2461","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2463	2016-05-26 00:42:25.139555	2016-06-05 19:44:11.255615	farm	products	{"category_ids":[15,59],"title":"Е2100 Сетка 100л. елка 1,2х1,2","price":615,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2463","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2465	2016-05-26 00:42:25.306571	2016-06-05 19:44:11.41137	farm	products	{"category_ids":[15,59],"title":"Е50539  рис.Снежинка 25мм, 100 ламп, цветная.5,2 м+1,5м","price":605,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2465","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2481	2016-05-26 00:42:26.86455	2016-06-14 20:57:24.545208	farm	products	{"category_ids":[15,63],"title":"Овес","price":15,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]},"images":[{"small":"/uploads/61/Овес_small.jpg","big":"/uploads/60/Овес_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2481","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2467	2016-05-26 00:42:25.473509	2016-06-05 19:44:11.500262	farm	products	{"category_ids":[15,60],"title":"Кормушка №2","price":2250,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2467","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2470	2016-05-26 00:42:25.726874	2016-06-05 19:44:11.655409	farm	products	{"category_ids":[15,60],"title":"Скворечник","price":1500,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2470","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2471	2016-05-26 00:42:25.828909	2016-06-05 19:44:11.743368	farm	products	{"category_ids":[15,60],"title":"Стул","price":7000,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2471","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2473	2016-05-26 00:42:26.017277	2016-06-05 19:44:11.966886	farm	products	{"category_ids":[15,61],"title":"Подставка","price":700,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2473","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2476	2016-05-26 00:42:26.273415	2016-06-05 19:44:12.210555	farm	products	{"category_ids":[15,62],"title":"Куры \\"Хайсекс Браун\\"","price":400,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2476","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2478	2016-05-26 00:42:26.588385	2016-06-05 19:44:12.367422	farm	products	{"category_ids":[15,63],"title":"Кукуруза","price":19,"unit":"кг","properties":{"animal_ids":[49,50,52,53,55]}}	{"_index":"farm","_type":"products","_id":"2478","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2479	2016-05-26 00:42:26.681942	2016-06-05 19:44:12.446725	farm	products	{"category_ids":[15,63],"title":"Кукуруза Размол","price":20,"unit":"кг","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2479","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2481	2016-05-26 00:42:26.86455	2016-06-05 19:44:12.610822	farm	products	{"category_ids":[15,63],"title":"Овес","price":15,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]}}	{"_index":"farm","_type":"products","_id":"2481","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2483	2016-05-26 00:42:27.060652	2016-06-05 19:44:12.777997	farm	products	{"category_ids":[15,63],"title":"Просо","price":25,"unit":"кг","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2483","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2483	2016-05-26 00:42:27.060652	2016-06-14 21:26:55.997885	farm	products	{"category_ids":[15,63],"title":"Просо","price":25,"unit":"кг","properties":{"animal_ids":[49,50,51,52]},"images":[{"small":"/uploads/63/Просо_small.jpg","big":"/uploads/62/Просо_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2483","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2479	2016-05-26 00:42:26.681942	2016-06-14 21:29:06.660001	farm	products	{"category_ids":[15,63],"title":"Кукуруза Размол","price":20,"unit":"кг","properties":{"animal_ids":[49,50,51,52,53]},"images":[{"small":"/uploads/69/Размол кукурузы_small.jpg","big":"/uploads/68/Размол кукурузы_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2479","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2485	2016-05-26 00:42:27.262482	2016-06-05 19:44:12.965718	farm	products	{"category_ids":[15,63],"title":"Размол зерновых","price":18,"unit":"кг","properties":{"animal_ids":[49,50,52,53]}}	{"_index":"farm","_type":"products","_id":"2485","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2487	2016-05-26 00:42:27.45229	2016-06-05 19:44:13.143663	farm	products	{"category_ids":[15,63],"title":"Ракушка","price":20,"unit":"кг","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2487","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2488	2016-05-26 00:42:27.552515	2016-06-05 19:44:13.278131	farm	products	{"category_ids":[15,63],"title":"семечки","price":36,"unit":"кг","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2488","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -380,7 +302,7 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2515	2016-05-26 00:42:29.894306	2016-06-05 19:44:14.754869	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/кошек подушечки/паштет курица/утка/индейка 1,9кг.","price":366,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2515","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2642	2016-05-26 00:42:41.256117	2016-06-05 19:44:26.769728	farm	products	{"category_ids":[15,67],"title":"Бункерная кормушка из оцинковки для кроликов 3 кг","price":417,"unit":"шт","properties":{"animal_ids":[49,50,51,52,55]}}	{"_index":"farm","_type":"products","_id":"2642","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2516	2016-05-26 00:42:29.985778	2016-06-05 19:44:14.843796	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/кошек подушечки/паштет курица/утка/индейка 350г","price":75,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[90]}}	{"_index":"farm","_type":"products","_id":"2516","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2520	2016-05-26 00:42:30.384654	2016-06-05 19:44:15.155181	farm	products	{"category_ids":[15,64,112],"title":"ДОГ ЛАНЧ кон.д/собак 760г.","price":95,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[118]}}	{"_index":"farm","_type":"products","_id":"2520","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2463	2016-05-26 00:42:25.139555	2016-06-05 19:44:11.255615	farm	products	{"category_ids":[15,59],"title":"Е2100 Сетка 100л. елка 1,2х1,2","price":615,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2463","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2507	2016-05-26 00:42:29.239533	2016-06-05 19:44:15.310225	farm	products	{"category_ids":[15,64,112],"title":"Вискас ПАУЧ д/кошек рагу с форнелью 85г","price":22,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2507","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2527	2016-05-26 00:42:30.930342	2016-06-05 19:44:15.467317	farm	products	{"category_ids":[15,64,112],"title":"КИТИКЕТ сух.д/кошек ассорти 1кг.","price":132,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[105]}}	{"_index":"farm","_type":"products","_id":"2527","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2511	2016-05-26 00:42:29.56302	2016-06-05 19:44:15.54389	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/стерилизованых кошек КРОЛИК 350г","price":83,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[90]}}	{"_index":"farm","_type":"products","_id":"2511","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -391,7 +313,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2495	2016-05-26 00:42:28.162959	2016-06-05 19:44:16.255167	farm	products	{"category_ids":[15,64,112],"title":"Вака Люкс для крупных попугаев 800г.","price":206,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[109]}}	{"_index":"farm","_type":"products","_id":"2495","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2508	2016-05-26 00:42:29.317633	2016-06-05 19:44:16.388373	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/стерилизованых кошек 1.9кг","price":403,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2508","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2525	2016-05-26 00:42:30.774553	2016-06-05 19:44:16.555003	farm	products	{"category_ids":[15,64,112],"title":"КИТИКЕТ ПАУЧ д/кошек рыба в соусе 100г.","price":19,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[108]}}	{"_index":"farm","_type":"products","_id":"2525","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2517	2016-05-26 00:42:30.063508	2016-06-05 19:44:16.633097	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/кошек подушечки/паштет лосось/тунец/креветки 1,9 кг","price":366,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2517","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2499	2016-05-26 00:42:28.485671	2016-06-05 19:44:16.710507	farm	products	{"category_ids":[15,64,112],"title":"Вискас ПАУЧ д/котят паштет курица 85г","price":22,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2499","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2500	2016-05-26 00:42:28.563087	2016-06-05 19:44:16.866042	farm	products	{"category_ids":[15,64,112],"title":"Вискас ПАУЧ д/кошек желе говядина/ягненок 85г","price":22,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2500","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2538	2016-05-26 00:42:31.905688	2016-06-05 19:44:17.021666	farm	products	{"category_ids":[15,64,112],"title":"НМ для взрослых собак мелких пород 500г","price":71,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2538","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -401,7 +322,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2544	2016-05-26 00:42:32.419429	2016-06-05 19:44:17.599664	farm	products	{"category_ids":[15,64,112],"title":"НМ для щенков кр. пород 500г","price":81,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2544","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2552	2016-05-26 00:42:33.075343	2016-06-05 19:44:19.612211	farm	products	{"category_ids":[15,64,112],"title":"ПЕДИГРИ сух.д/собак миниатюрных пород говядина 1,2кг.","price":212,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[103]}}	{"_index":"farm","_type":"products","_id":"2552","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2547	2016-05-26 00:42:32.663226	2016-06-05 19:44:17.83474	farm	products	{"category_ids":[15,64,113],"title":"Ошейник брезент одинарный 45","price":187,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2547","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2543	2016-05-26 00:42:32.3286	2016-06-05 19:44:18.01341	farm	products	{"category_ids":[15,64,112],"title":"НМ для стерилизованных кошек в асс.400г.","price":67,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[96]}}	{"_index":"farm","_type":"products","_id":"2543","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2551	2016-05-26 00:42:32.995372	2016-06-05 19:44:18.168004	farm	products	{"category_ids":[15,64,112],"title":"ПЕДИГРИ сух.д/собак малых пород 600 кг.","price":110,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[98]}}	{"_index":"farm","_type":"products","_id":"2551","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2532	2016-05-26 00:42:31.405991	2016-06-05 19:44:18.356788	farm	products	{"category_ids":[15,64,113],"title":"КУЗЯ наполнитель для котят впитывающий 4,5л 2,8кг","price":74,"unit":"шт","properties":{"home_animal_ids":[94]}}	{"_index":"farm","_type":"products","_id":"2532","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2564	2016-05-26 00:42:34.218784	2016-06-05 19:44:18.434763	farm	products	{"category_ids":[15,64,112],"title":"РИО  волнистые попугаи осногвной 500г","price":72,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2564","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -422,7 +342,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2580	2016-05-26 00:42:35.641546	2016-06-05 19:44:20.634729	farm	products	{"category_ids":[15,64,113],"title":"Серия 44 капли на холку 2*0,5/0,75/1мл.","price":143,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2580","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2591	2016-05-26 00:42:36.543037	2016-06-05 19:44:20.879376	farm	products	{"category_ids":[15,64,112],"title":"Фаворит Для кошек 4 кг","price":432,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[106]}}	{"_index":"farm","_type":"products","_id":"2591","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2567	2016-05-26 00:42:34.487348	2016-06-05 19:44:20.957556	farm	products	{"category_ids":[15,64,112],"title":"РИО  средние попугаи осногвной 500г","price":81,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2567","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2601	2016-05-26 00:42:37.354314	2016-06-05 19:44:21.179906	farm	products	{"category_ids":[15,64,112],"title":"ШЕБА ПАУЧ д/кошек курица/индейка 85г.","price":35,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2601","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2593	2016-05-26 00:42:36.698113	2016-06-05 19:44:21.268546	farm	products	{"category_ids":[15,64,112],"title":"Фрискис 1,5 кг.","price":278,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[116]}}	{"_index":"farm","_type":"products","_id":"2593","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2600	2016-05-26 00:42:37.264778	2016-06-05 19:44:21.44711	farm	products	{"category_ids":[15,64,112],"title":"ШЕБА ПАУЧ д/кошек говядина ягненак 85г.","price":35,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2600","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2582	2016-05-26 00:42:35.796211	2016-06-05 19:44:21.612806	farm	products	{"category_ids":[15,64,112],"title":"Сильвер для средних попугаев 500г.","price":71,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2582","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -443,20 +362,14 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2722	2016-05-26 00:42:50.471301	2016-06-05 19:44:23.625107	farm	products	{"category_ids":[15,68],"title":"Премикс для телят 300 гр","price":80,"unit":"шт","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2722","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2596	2016-05-26 00:42:36.931974	2016-06-05 19:44:21.03458	farm	products	{"category_ids":[15,64,112],"title":"ЦЕЗАРЬ ПАУЧ д/собак курица с зелеными овощами 100г","price":33,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[108]}}	{"_index":"farm","_type":"products","_id":"2596","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2615	2016-05-26 00:42:38.613231	2016-06-05 19:44:23.913126	farm	products	{"category_ids":[15,65],"title":"Клеточная батарея для кроликов 2-1","price":6077,"unit":"шт","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2615","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2617	2016-05-26 00:42:38.787385	2016-06-05 19:44:24.070464	farm	products	{"category_ids":[15,66],"title":"Ижевск ПК1 несушек 48 недель","price":20,"unit":"шт","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2617","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2619	2016-05-26 00:42:39.043649	2016-06-05 19:44:24.246469	farm	products	{"category_ids":[15,66],"title":"К-58 для откорма свиней специальный","price":18,"unit":"кг","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2619","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2621	2016-05-26 00:42:39.331126	2016-06-05 19:44:24.413323	farm	products	{"category_ids":[15,66],"title":"К-60 для коров специальный","price":18,"unit":"кг","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2621","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2622	2016-05-26 00:42:39.411491	2016-06-05 19:44:24.491679	farm	products	{"category_ids":[15,66],"title":"К-65 для откорма КРС","price":20,"unit":"кг","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2622","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2622	2016-05-26 00:42:39.411491	2016-06-14 21:35:34.058849	farm	products	{"category_ids":[15,66],"title":"К-65 для откорма КРС","price":20,"unit":"кг","properties":{"animal_ids":[54]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2622","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2633	2016-05-26 00:42:40.446199	2016-06-14 21:36:45.810077	farm	products	{"category_ids":[15,66],"title":"ПК-10 для взрослых индеек","price":25,"unit":"кг","properties":{"animal_ids":[52]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2633","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2624	2016-05-26 00:42:39.636469	2016-06-05 19:44:24.647122	farm	products	{"category_ids":[15,66],"title":"Курск Для взрослых кроликов","price":17,"unit":"шт","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2624","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2625	2016-05-26 00:42:39.712281	2016-06-05 19:44:24.800371	farm	products	{"category_ids":[15,66],"title":"Курск Для откорма Свиней","price":17,"unit":"кг","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2625","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2627	2016-05-26 00:42:39.927542	2016-06-05 19:44:25.091907	farm	products	{"category_ids":[15,66],"title":"Отруби пшеничные кормовые","price":13,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54]}}	{"_index":"farm","_type":"products","_id":"2627","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2629	2016-05-26 00:42:40.1024	2016-06-05 19:44:25.245962	farm	products	{"category_ids":[15,66],"title":"ПК-1 П для перепелов 7 недель и старше","price":30,"unit":"кг","properties":{"animal_ids":[51]}}	{"_index":"farm","_type":"products","_id":"2629","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2631	2016-05-26 00:42:40.279752	2016-06-05 19:44:25.467887	farm	products	{"category_ids":[15,66],"title":"ПК-1/2 для кур специальный ЕРШ","price":18,"unit":"кг","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2631","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2633	2016-05-26 00:42:40.446199	2016-06-05 19:44:25.869239	farm	products	{"category_ids":[15,66],"title":"ПК-10 для взрослых индеек","price":25,"unit":"кг","properties":{"animal_ids":[52]}}	{"_index":"farm","_type":"products","_id":"2633","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2634	2016-05-26 00:42:40.535446	2016-06-05 19:44:25.959636	farm	products	{"category_ids":[15,66],"title":"ПК-2 для молод. Кур 1-7 нед по заказу","price":39,"unit":"кг","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2634","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2636	2016-05-26 00:42:40.690225	2016-06-05 19:44:26.213857	farm	products	{"category_ids":[15,66],"title":"ПК-4 для молод кур 14-17 нед.","price":25,"unit":"кг","properties":{}}	{"_index":"farm","_type":"products","_id":"2636","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2638	2016-05-26 00:42:40.856726	2016-06-05 19:44:26.38084	farm	products	{"category_ids":[15,66],"title":"ПК-6 для бройлеров 5 нед и старше","price":37,"unit":"кг","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2638","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2639	2016-05-26 00:42:40.957147	2016-06-05 19:44:26.457537	farm	products	{"category_ids":[15,66],"title":"СК Смесь кормовая","price":17,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]}}	{"_index":"farm","_type":"products","_id":"2639","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2634	2016-05-26 00:42:40.535446	2016-06-14 21:44:23.231479	farm	products	{"category_ids":[15,66],"title":"ПК-2 для молод. Кур 1-7 нед по заказу","price":39,"unit":"кг","properties":{"animal_ids":[49]},"images":[{"small":"/uploads/77/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_small.jpg","big":"/uploads/76/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2634","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2631	2016-05-26 00:42:40.279752	2016-06-14 21:40:10.617189	farm	products	{"category_ids":[15,66],"title":"ПК-1/2 для кур специальный ЕРШ","price":18,"unit":"кг","properties":{"animal_ids":[49]},"images":[{"small":"/uploads/75/пк-1-2 пз, пк1-2 ершов, пк-4_small.jpg","big":"/uploads/74/пк-1-2 пз, пк1-2 ершов, пк-4_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2631","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2629	2016-05-26 00:42:40.1024	2016-06-14 21:47:04.834908	farm	products	{"category_ids":[15,66],"title":"ПК-1 П для перепелов 7 недель и старше","price":30,"unit":"кг","properties":{"animal_ids":[51]},"images":[{"small":"/uploads/77/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_small.jpg","big":"/uploads/76/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2629","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2797	2016-05-26 00:42:58.311584	2016-06-05 19:44:26.535436	farm	products	{"category_ids":[15,70],"title":"На счастье","price":2079,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2797","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2643	2016-05-26 00:42:41.364222	2016-06-05 19:44:26.847123	farm	products	{"category_ids":[15,67],"title":"Бункерная кормушка из оцинковки на 10 л","price":476,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2643","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2645	2016-05-26 00:42:41.546903	2016-06-05 19:44:27.002475	farm	products	{"category_ids":[15,67],"title":"Навесная кормушка  для перепелов 89 см","price":332,"unit":"шт","properties":{"animal_ids":[51]}}	{"_index":"farm","_type":"products","_id":"2645","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -466,21 +379,16 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2653	2016-05-26 00:42:42.341506	2016-06-05 19:44:27.702713	farm	products	{"category_ids":[15,67],"title":"Кормушка бункерная прозрачная для кур 10 л","price":580,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2653","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2655	2016-05-26 00:42:42.559822	2016-06-05 19:44:27.859315	farm	products	{"category_ids":[15,67],"title":"Кормушка под банку","price":119,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2655","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2656	2016-05-26 00:42:42.655621	2016-06-05 19:44:27.936855	farm	products	{"category_ids":[15,67],"title":"Кормушка/поилка лотковая 50см для цыплят (КЖ-50)","price":250,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2656","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2658	2016-05-26 00:42:42.828811	2016-06-05 19:44:28.102173	farm	products	{"category_ids":[15,67],"title":"Ниппель ПКН-6/360 для бройлеров и перепелов","price":40,"unit":"шт","properties":{"animal_ids":[49,51,52]}}	{"_index":"farm","_type":"products","_id":"2658","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2659	2016-05-26 00:42:42.916928	2016-06-05 19:44:28.193029	farm	products	{"category_ids":[15,67],"title":"Овоскоп","price":595,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2659","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2661	2016-05-26 00:42:43.150546	2016-06-05 19:44:28.370287	farm	products	{"category_ids":[15,67],"title":"Поилка вакуумная на 3 литра","price":262,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2661","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2662	2016-05-26 00:42:43.23727	2016-06-05 19:44:28.459022	farm	products	{"category_ids":[15,67],"title":"Поилка вакуумная на 5 литров","price":346,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2662","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2665	2016-05-26 00:42:43.623656	2016-06-05 19:44:28.714772	farm	products	{"category_ids":[15,67],"title":"Поилка для кроликов ПКН-10 в комплекте с крепление","price":54,"unit":"шт","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2665","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2666	2016-05-26 00:42:43.728965	2016-06-05 19:44:28.792212	farm	products	{"category_ids":[15,67],"title":"Поилка для цыплят 1.5 л","price":179,"unit":"шт","properties":{"animal_ids":[49,52]}}	{"_index":"farm","_type":"products","_id":"2666","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2668	2016-05-26 00:42:43.901162	2016-06-05 19:44:28.946786	farm	products	{"category_ids":[15,67],"title":"Поилка ниппельная ПСН-33 для свиней","price":179,"unit":"шт","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2668","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2669	2016-05-26 00:42:44.029487	2016-06-05 19:44:29.025965	farm	products	{"category_ids":[15,67],"title":"Поилка ПЖН-8/360 с креплением","price":54,"unit":"шт","properties":{"animal_ids":[49,52]}}	{"_index":"farm","_type":"products","_id":"2669","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2671	2016-05-26 00:42:44.253986	2016-06-05 19:44:29.192611	farm	products	{"category_ids":[15,67],"title":"Поилка ПКН-9 для кроликов с креплением","price":58,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2671","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2672	2016-05-26 00:42:44.353057	2016-06-05 19:44:29.281641	farm	products	{"category_ids":[15,67],"title":"Поилка ПКНК-12/360 оснащена креплением под круглую трубу 25 мм","price":80,"unit":"шт","properties":{"animal_ids":[49,51,52]}}	{"_index":"farm","_type":"products","_id":"2672","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2674	2016-05-26 00:42:44.542586	2016-06-05 19:44:29.47025	farm	products	{"category_ids":[15,67],"title":"Поилка ПКНС-8 с наружным креплением на сетку, под","price":47,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2674","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2680	2016-05-26 00:42:45.245011	2016-06-14 20:20:25.489989	farm	products	{"category_ids":[15,67],"title":"Штуцер диаметром 10 мм","price":40,"unit":"шт","properties":{"animal_ids":[49,51,52,55]},"images":[{"small":"/uploads/55/штуцер_small.jpg","big":"/uploads/54/штуцер_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2680","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2671	2016-05-26 00:42:44.253986	2016-06-14 19:39:45.005135	farm	products	{"category_ids":[15,67],"title":"Поилка ПКН-9 для кроликов с креплением","price":58,"unit":"шт","properties":{},"images":[{"big":"/uploads/38/пкн-9_big.jpg","small":"/uploads/39/пкн-9_small.jpg"}]}	{"_index":"farm","_type":"products","_id":"2671","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2674	2016-05-26 00:42:44.542586	2016-06-14 20:01:17.960935	farm	products	{"category_ids":[15,67],"title":"Поилка ПКНС-8 с наружным креплением на сетку, под","price":47,"unit":"шт","properties":{},"images":[{"small":"/uploads/45/пкнс 8_small.jpg","big":"/uploads/44/пкнс 8_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2674","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2668	2016-05-26 00:42:43.901162	2016-06-14 20:10:48.905432	farm	products	{"category_ids":[15,67],"title":"Поилка ниппельная ПСН-33 для свиней","price":179,"unit":"шт","properties":{"animal_ids":[53]},"images":[{"small":"/uploads/49/псн-33_small.jpg","big":"/uploads/48/псн-33_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2668","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2675	2016-05-26 00:42:44.633565	2016-06-05 19:44:29.558654	farm	products	{"category_ids":[15,67],"title":"Поилка под бутылку","price":381,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2675","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2677	2016-05-26 00:42:44.816388	2016-06-05 19:44:29.716674	farm	products	{"category_ids":[15,67],"title":"Тройник красный 10 мм","price":34,"unit":"шт","properties":{"animal_ids":[49,51,52,55]}}	{"_index":"farm","_type":"products","_id":"2677","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2679	2016-05-26 00:42:45.150637	2016-06-05 19:44:29.937313	farm	products	{"category_ids":[15,67],"title":"Шланг для ниппельного поения 8мм","price":40,"unit":"м","properties":{"animal_ids":[49,51,52,55]}}	{"_index":"farm","_type":"products","_id":"2679","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2680	2016-05-26 00:42:45.245011	2016-06-05 19:44:30.014385	farm	products	{"category_ids":[15,67],"title":"Штуцер диаметром 10 мм","price":40,"unit":"шт","properties":{"animal_ids":[49,51,52,55]}}	{"_index":"farm","_type":"products","_id":"2680","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2682	2016-05-26 00:42:45.479203	2016-06-05 19:44:30.180532	farm	products	{"category_ids":[15,68],"title":"БВМД для свиней 300 гр","price":61,"unit":"шт","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2682","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2684	2016-05-26 00:42:45.707881	2016-06-05 19:44:30.348221	farm	products	{"category_ids":[15,68],"title":"Белковая  кормосмесь 2кг (аналог кормовых дрожжей)","price":251,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2684","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2685	2016-05-26 00:42:45.792055	2016-06-05 19:44:30.436478	farm	products	{"category_ids":[15,68],"title":"Вазелин 200г  (банка)","price":65,"unit":"шт","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2685","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -489,7 +397,7 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2692	2016-05-26 00:42:46.516106	2016-06-05 19:44:31.026108	farm	products	{"category_ids":[15,68],"title":"Крем для доения \\"Ночка\\" банка 200г.","price":115,"unit":"шт","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2692","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2694	2016-05-26 00:42:46.701378	2016-06-05 19:44:31.241517	farm	products	{"category_ids":[15,68],"title":"Крем Любава 250мл. с ионами серебра .","price":175,"unit":"шт","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2694","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2695	2016-05-26 00:42:46.825102	2016-06-05 19:44:31.503685	farm	products	{"category_ids":[15,68],"title":"Лимисол-Ф (брикет 5кг)","price":230,"unit":"шт","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2695","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2698	2016-05-26 00:42:47.144473	2016-06-05 19:44:31.814679	farm	products	{"category_ids":[15,68],"title":"Минеральный комплекс для домашней птицы 500 гр ДС","price":52,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2698","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2669	2016-05-26 00:42:44.029487	2016-06-13 22:00:20.601622	farm	products	{"category_ids":[15,67],"title":"Поилка ПЖН-8/360 с креплением","price":54,"unit":"шт","properties":{"animal_ids":[49,52]},"images":[{"big":"/uploads/30/пжн 8-360_big.jpg","small":"/uploads/31/пжн 8-360_small.jpg"}]}	{"_index":"farm","_type":"products","_id":"2669","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2699	2016-05-26 00:42:47.235598	2016-06-05 19:44:31.914071	farm	products	{"category_ids":[15,68],"title":"Мясокостная мука 2 кг","price":272,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2699","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2700	2016-05-26 00:42:47.325843	2016-06-05 19:44:31.99214	farm	products	{"category_ids":[15,68],"title":"Мясокостная мука 400 гр","price":75,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2700","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2702	2016-05-26 00:42:47.504644	2016-06-05 19:44:32.148689	farm	products	{"category_ids":[15,68],"title":"Премикс для бройлеров 150 гр","price":58,"unit":"шт","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2702","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -511,8 +419,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2730	2016-05-26 00:42:51.445163	2016-06-05 19:44:34.683216	farm	products	{"category_ids":[15,68],"title":"Ракушка калиброванная 4кг.","price":136,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2730","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2732	2016-05-26 00:42:51.747441	2016-06-05 19:44:34.839246	farm	products	{"category_ids":[15,68],"title":"Рыбная мука 2 кг","price":507,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2732","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2734	2016-05-26 00:42:51.943168	2016-06-05 19:44:35.016002	farm	products	{"category_ids":[15,68],"title":"Сера кормовая  \\"Рацион\\" 300 гр.","price":54,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53,54]}}	{"_index":"farm","_type":"products","_id":"2734","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2736	2016-05-26 00:42:52.112777	2016-06-05 19:44:35.270764	farm	products	{"category_ids":[15,68],"title":"Травяная мука 1,5кг","price":185,"unit":"шт","properties":{"animal_ids":[50,53,54,55]}}	{"_index":"farm","_type":"products","_id":"2736","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2738	2016-05-26 00:42:52.362726	2016-06-05 19:44:35.770727	farm	products	{"category_ids":[15,68],"title":"Цеолитовый природный комплекс  для домашней птицы 500 гр","price":57,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2738","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2739	2016-05-26 00:42:52.454833	2016-06-05 19:44:35.993597	farm	products	{"category_ids":[15,68],"title":"Цеолитовый природный комплекс  для свиней 1,3 кг","price":123,"unit":"шт","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2739","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2740	2016-05-26 00:42:52.557956	2016-06-05 19:44:36.148342	farm	products	{"category_ids":[15,68],"title":"Шрот подсолнечный 1,6 кг.","price":190,"unit":"шт","properties":{"animal_ids":[49,50,52,53]}}	{"_index":"farm","_type":"products","_id":"2740","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2741	2016-05-26 00:42:52.652611	2016-06-05 19:44:36.238357	farm	products	{"category_ids":[15,69],"title":"Баклажан \\"Алмаз\\"","price":50,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2741","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -537,7 +443,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2776	2016-05-26 00:42:56.270287	2016-06-05 19:44:39.283809	farm	products	{"category_ids":[15,70],"title":"Веселый пиротехник","price":675,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2776","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2778	2016-05-26 00:42:56.459516	2016-06-05 19:44:39.449068	farm	products	{"category_ids":[15,70],"title":"Госпожа метелица","price":3815,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2778","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2780	2016-05-26 00:42:56.647652	2016-06-05 19:44:39.606942	farm	products	{"category_ids":[15,70],"title":"ЗД.Медный всадник","price":3400,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2780","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2781	2016-05-26 00:42:56.734218	2016-06-05 19:44:39.683305	farm	products	{"category_ids":[15,70],"title":"Зимняя ночь","price":2520,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2781","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2783	2016-05-26 00:42:56.958202	2016-06-05 19:44:39.839557	farm	products	{"category_ids":[15,70],"title":"Изуумрудный город","price":16500,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2783","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2785	2016-05-26 00:42:57.167818	2016-06-05 19:44:40.0053	farm	products	{"category_ids":[15,70],"title":"Корсар-1","price":68,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2785","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2787	2016-05-26 00:42:57.348322	2016-06-05 19:44:40.239311	farm	products	{"category_ids":[15,70],"title":"Корсар-4","price":114,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2787","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -551,8 +456,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2803	2016-05-26 00:42:59.722952	2016-06-05 19:44:41.561093	farm	products	{"category_ids":[15,70],"title":"Новогоднее приключение","price":8554,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2803","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2805	2016-05-26 00:43:00.480264	2016-06-05 19:44:41.716222	farm	products	{"category_ids":[15,70],"title":"Павлин","price":2360,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2805","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2806	2016-05-26 00:43:00.689697	2016-06-05 19:44:41.794034	farm	products	{"category_ids":[15,70],"title":"Перчинка","price":543,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2806","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2809	2016-05-26 00:43:01.001764	2016-06-05 19:44:42.094824	farm	products	{"category_ids":[15,70],"title":"пневмохлопушка Свадебная 30 см (конф. сердце)","price":173,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2809","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2632	2016-05-26 00:42:40.360445	2016-06-05 19:44:25.612666	farm	products	{"category_ids":[15,66],"title":"ПК-1/2 ПЗ для кур несушек 48 нед. и старше","price":16,"unit":"кг","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2632","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2813	2016-05-26 00:43:01.456749	2016-06-05 19:44:42.438572	farm	products	{"category_ids":[15,70],"title":"Радость общения","price":3180,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2813","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2815	2016-05-26 00:43:01.880448	2016-06-05 19:44:42.617263	farm	products	{"category_ids":[15,70],"title":"Русский сувенир","price":2310,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2815","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2817	2016-05-26 00:43:02.044159	2016-06-05 19:44:42.773177	farm	products	{"category_ids":[15,70],"title":"Северное сияние","price":1700,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2817","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -564,11 +467,9 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2827	2016-05-26 00:43:03.03886	2016-06-05 19:44:43.88446	farm	products	{"category_ids":[15,70],"title":"Тропикана","price":2560,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2827","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2829	2016-05-26 00:43:03.224418	2016-06-05 19:44:44.270535	farm	products	{"category_ids":[15,70],"title":"Удалой","price":5292,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2829","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2831	2016-05-26 00:43:03.434389	2016-06-05 19:44:44.796666	farm	products	{"category_ids":[15,70],"title":"Хлопушка","price":79,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2831","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2833	2016-05-26 00:43:03.636224	2016-06-05 19:44:44.973303	farm	products	{"category_ids":[15,70],"title":"Хлопушка \\"Супер\\"","price":88,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2833","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2834	2016-05-26 00:43:03.727591	2016-06-05 19:44:45.050752	farm	products	{"category_ids":[15,70],"title":"Цветущая сакура","price":2520,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2834","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2836	2016-05-26 00:43:03.901532	2016-06-05 19:44:45.217622	farm	products	{"category_ids":[15,70],"title":"Чудо-юдо","price":478,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2836","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2838	2016-05-26 00:43:04.114042	2016-06-05 19:44:45.43901	farm	products	{"category_ids":[15,70],"title":"Ястреб","price":576,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2838","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2840	2016-05-26 00:43:04.306302	2016-06-05 19:44:45.617558	farm	products	{"category_ids":[15,71],"title":"Родентицидная прим \\"Крысиная смерть № 1\\"  (200гр.)","price":120,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2840","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2842	2016-05-26 00:43:04.480368	2016-06-05 19:44:45.805919	farm	products	{"category_ids":[15,71],"title":"Родентицидная приманка \\"ЩЕЛКУНЧИК\\" 0.2кг","price":100,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2842","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2843	2016-05-26 00:43:04.622939	2016-06-05 19:44:45.883425	farm	products	{"category_ids":[15,71],"title":"Серная дымовая шашка \\"Климат\\" 300г.","price":91,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2843","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2844	2016-05-26 00:43:04.865612	2016-06-05 19:44:45.962521	farm	products	{"category_ids":[15,71],"title":"Циперол 170мл аэрозоль","price":322,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2844","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -589,7 +490,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2506	2016-05-26 00:42:29.165066	2016-06-05 19:44:50.796579	farm	products	{"category_ids":[15,64,112],"title":"Вискас ПАУЧ д/кошек рагу курица в кремовом соусе 85г","price":22,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2506","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2542	2016-05-26 00:42:32.240996	2016-06-05 19:44:50.884349	farm	products	{"category_ids":[15,64,112],"title":"НМ для привередливых кошек в асс.400г.","price":75,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[96]}}	{"_index":"farm","_type":"products","_id":"2542","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2849	2016-05-26 00:43:05.411591	2016-06-05 19:44:51.118766	farm	products	{"category_ids":[15,71],"title":"Йодная шашка Диксам (3 табл.)","price":284,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2849","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2519	2016-05-26 00:42:30.296706	2016-06-05 19:44:51.195245	farm	products	{"category_ids":[15,64,112],"title":"Вискис сух.д/котят подушечки с молоком индейка/морковь 350 г.","price":75,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[90]}}	{"_index":"farm","_type":"products","_id":"2519","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2554	2016-05-26 00:42:33.231035	2016-06-05 19:44:51.351253	farm	products	{"category_ids":[15,64,112],"title":"ПЕДИГРИ сух.д/собак миниатюрных пород курица 1,2кг.","price":212,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[103]}}	{"_index":"farm","_type":"products","_id":"2554","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2503	2016-05-26 00:42:28.829807	2016-06-05 19:44:51.43001	farm	products	{"category_ids":[15,64,112],"title":"Вискас ПАУЧ д/кошек паштет говядина/печень 85г","price":22,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2503","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2537	2016-05-26 00:42:31.830724	2016-06-05 19:44:51.518822	farm	products	{"category_ids":[15,64,112],"title":"НМ для взрослых собак крупных пород 3кг","price":386,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[104]}}	{"_index":"farm","_type":"products","_id":"2537","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -598,20 +498,17 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2587	2016-05-26 00:42:36.220539	2016-06-05 19:44:52.006962	farm	products	{"category_ids":[15,64,112],"title":"Терра Пес для взрослых собак мел. и.сред.пород 2,4кг.","price":251,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[123]}}	{"_index":"farm","_type":"products","_id":"2587","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2733	2016-05-26 00:42:51.849038	2016-06-05 19:44:34.926963	farm	products	{"category_ids":[15,68],"title":"Рыбная мука 300 гр","price":85,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2733","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2807	2016-05-26 00:43:00.768208	2016-06-05 19:44:41.916872	farm	products	{"category_ids":[15,70],"title":"пневмохлопушка праздничная 30 см (цветн. бум. конфети)","price":151,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2807","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2518	2016-05-26 00:42:30.208193	2016-06-05 19:44:15.076819	farm	products	{"category_ids":[15,64,112],"title":"Вискис сух.д/котят подушечки с молоком индейка/морковь 1,9 кг.","price":435,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2518","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2475	2016-05-26 00:42:26.188565	2016-06-05 19:44:12.13353	farm	products	{"category_ids":[15,62],"title":"Куры \\"Хайсекс Белый\\"","price":450,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2475","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2477	2016-05-26 00:42:26.428122	2016-06-05 19:44:12.288088	farm	products	{"category_ids":[15,63],"title":"Зерновая смесь для птицы","price":25,"unit":"кг","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2477","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2480	2016-05-26 00:42:26.773968	2016-06-05 19:44:12.534131	farm	products	{"category_ids":[15,63],"title":"Мел 2,5 кг","price":150,"unit":"шт","properties":{"animal_ids":[49,50,51,52,53,54]}}	{"_index":"farm","_type":"products","_id":"2480","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2482	2016-05-26 00:42:26.964667	2016-06-05 19:44:12.689512	farm	products	{"category_ids":[15,63],"title":"Отруби","price":12,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]}}	{"_index":"farm","_type":"products","_id":"2482","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2484	2016-05-26 00:42:27.161851	2016-06-05 19:44:12.878158	farm	products	{"category_ids":[15,63],"title":"Пшеница","price":17,"unit":"кг","properties":{"animal_ids":[49,50,52,53]}}	{"_index":"farm","_type":"products","_id":"2484","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2486	2016-05-26 00:42:27.352012	2016-06-05 19:44:13.056705	farm	products	{"category_ids":[15,63],"title":"Размол зерновых №2","price":19,"unit":"кг","properties":{"animal_ids":[49,50,51,52,53]}}	{"_index":"farm","_type":"products","_id":"2486","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2489	2016-05-26 00:42:27.653379	2016-06-05 19:44:13.355903	farm	products	{"category_ids":[15,63],"title":"Ячмень","price":17,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]}}	{"_index":"farm","_type":"products","_id":"2489","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2486	2016-05-26 00:42:27.352012	2016-06-14 21:28:20.783456	farm	products	{"category_ids":[15,63],"title":"Размол зерновых №2","price":19,"unit":"кг","properties":{"animal_ids":[49,50,51,52,53]},"images":[{"small":"/uploads/67/Размол зерновых №2_small.jpg","big":"/uploads/66/Размол зерновых №2_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2486","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2489	2016-05-26 00:42:27.653379	2016-06-14 21:29:58.982337	farm	products	{"category_ids":[15,63],"title":"Ячмень","price":17,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]},"images":[{"small":"/uploads/71/Ячмень_small.jpg","big":"/uploads/70/Ячмень_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2489","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2458	2016-05-26 00:42:24.609387	2016-06-05 19:44:13.621909	farm	products	{"category_ids":[15,59],"title":"Гирлянды Светодиодные 160л.","price":450,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2458","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2490	2016-05-26 00:42:27.755017	2016-06-05 19:44:13.788495	farm	products	{"category_ids":[15,64,112],"title":"БРИТ для крупных пород 12 кг.","price":4084,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[115]}}	{"_index":"farm","_type":"products","_id":"2490","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2528	2016-05-26 00:42:31.008212	2016-06-05 19:44:14.055575	farm	products	{"category_ids":[15,64,112],"title":"КИТИКЕТ сух.д/кошек ассорти 350г.","price":60,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[90]}}	{"_index":"farm","_type":"products","_id":"2528","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2494	2016-05-26 00:42:28.083789	2016-06-05 19:44:14.666949	farm	products	{"category_ids":[15,64,112],"title":"Вака для Мел/сред. попугаев 500г.","price":40,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2494","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2526	2016-05-26 00:42:30.85161	2016-06-05 19:44:14.990142	farm	products	{"category_ids":[15,64,112],"title":"КИТИКЕТ сух.д/кошек ассорти 1,9кг.","price":280,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2526","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2496	2016-05-26 00:42:28.239169	2016-06-05 19:44:15.233044	farm	products	{"category_ids":[15,64,112],"title":"Вака Люкс для Мелких и средних попугаев 1000г.","price":138,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[105]}}	{"_index":"farm","_type":"products","_id":"2496","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2484	2016-05-26 00:42:27.161851	2016-06-14 21:27:40.163997	farm	products	{"category_ids":[15,63],"title":"Пшеница","price":17,"unit":"кг","properties":{"animal_ids":[49,50,52,53]},"images":[{"small":"/uploads/65/Пшеница_small.jpg","big":"/uploads/64/Пшеница_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2484","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2509	2016-05-26 00:42:29.396183	2016-06-05 19:44:15.388293	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/стерилизованых кошек ГОВЯДИНА 1,9кг","price":435,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2509","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2497	2016-05-26 00:42:28.318573	2016-06-05 19:44:15.710337	farm	products	{"category_ids":[15,64,112],"title":"Вака Люкс для средних попугаев 900г.","price":133,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[121]}}	{"_index":"farm","_type":"products","_id":"2497","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2493	2016-05-26 00:42:28.015227	2016-06-05 19:44:15.943857	farm	products	{"category_ids":[15,64,112],"title":"Вака для грызунов 500г.","price":29,"unit":"шт","properties":{"home_animal_ids":[122],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2493","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -631,7 +528,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2531	2016-05-26 00:42:31.272839	2016-06-05 19:44:18.511406	farm	products	{"category_ids":[15,64,112],"title":"КИТИКЕТ сух.д/кошек в ассортименте 2,2кг","price":275,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[120]}}	{"_index":"farm","_type":"products","_id":"2531","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2545	2016-05-26 00:42:32.507513	2016-06-05 19:44:18.756344	farm	products	{"category_ids":[15,64,112],"title":"НМ для щенков ср. и мелк. пород 500г","price":79,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[97]}}	{"_index":"farm","_type":"products","_id":"2545","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2560	2016-05-26 00:42:33.69756	2016-06-05 19:44:19.011743	farm	products	{"category_ids":[15,64,113],"title":"ПУСИ КЭТ Наполнитель древесный 4,5л.2,6кг","price":84,"unit":"шт","properties":{"home_animal_ids":[94]}}	{"_index":"farm","_type":"products","_id":"2560","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2540	2016-05-26 00:42:32.065053	2016-06-05 19:44:19.190447	farm	products	{"category_ids":[15,64,112],"title":"НМ для котят в асс.400г.","price":75,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[96]}}	{"_index":"farm","_type":"products","_id":"2540","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2534	2016-05-26 00:42:31.574021	2016-06-05 19:44:19.457354	farm	products	{"category_ids":[15,64,113],"title":"Натуралист древесный 7л.2,5 кг.","price":74,"unit":"шт","properties":{"home_animal_ids":[94]}}	{"_index":"farm","_type":"products","_id":"2534","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2595	2016-05-26 00:42:36.853505	2016-06-05 19:44:19.846861	farm	products	{"category_ids":[15,64,112],"title":"Фрискис 600 г.","price":144,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[98]}}	{"_index":"farm","_type":"products","_id":"2595","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2588	2016-05-26 00:42:36.306599	2016-06-05 19:44:20.055836	farm	products	{"category_ids":[15,64,112],"title":"Тушенка для собак 340г.","price":65,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[99]}}	{"_index":"farm","_type":"products","_id":"2588","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -650,31 +546,24 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2611	2016-05-26 00:42:38.266359	2016-06-05 19:44:23.469127	farm	products	{"category_ids":[15,65],"title":"Клетка для перепелов \\"ПРОФЕССИОНАЛ+\\" на 100голов","price":8840,"unit":"шт","properties":{"animal_ids":[51]}}	{"_index":"farm","_type":"products","_id":"2611","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2613	2016-05-26 00:42:38.434464	2016-06-05 19:44:23.701906	farm	products	{"category_ids":[15,65],"title":"Клетка для перепелов \\"Профессионал+\\" на 50 голов","price":4420,"unit":"шт","properties":{"animal_ids":[51]}}	{"_index":"farm","_type":"products","_id":"2613","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2616	2016-05-26 00:42:38.709125	2016-06-05 19:44:23.991841	farm	products	{"category_ids":[15,65],"title":"Лоток на 88 куриных","price":618,"unit":"шт","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2616","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2618	2016-05-26 00:42:38.876429	2016-06-05 19:44:24.157873	farm	products	{"category_ids":[15,66],"title":"К-58 ГР ПЗ для откорма свин. до жирн. конд.","price":16,"unit":"кг","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2618","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2620	2016-05-26 00:42:39.224066	2016-06-05 19:44:24.323672	farm	products	{"category_ids":[15,66],"title":"К-58 КР для откорма свиней до жирн. конд.","price":21,"unit":"кг","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2620","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2623	2016-05-26 00:42:39.541808	2016-06-05 19:44:24.569385	farm	products	{"category_ids":[15,66],"title":"КК-111 Комбикорм-концетрат для рыбы","price":29,"unit":"кг","properties":{}}	{"_index":"farm","_type":"products","_id":"2623","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2626	2016-05-26 00:42:39.814357	2016-06-05 19:44:24.985699	farm	products	{"category_ids":[15,66],"title":"Курск несушек 48 недель","price":19,"unit":"шт","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2626","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2628	2016-05-26 00:42:40.01489	2016-06-05 19:44:25.169387	farm	products	{"category_ids":[15,66],"title":"ПЗК-91 для кроликов","price":20,"unit":"кг","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2628","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2630	2016-05-26 00:42:40.190557	2016-06-05 19:44:25.390098	farm	products	{"category_ids":[15,66],"title":"ПК-1/2 для кур несушек 48 нед. и старше","price":24,"unit":"кг","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2630","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2731	2016-05-26 00:42:51.540125	2016-06-05 19:44:34.759107	farm	products	{"category_ids":[15,68],"title":"Рыбий жир 100мл ДС","price":73,"unit":"шт","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2731","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2651	2016-05-26 00:42:42.149381	2016-06-05 19:44:27.547185	farm	products	{"category_ids":[15,67],"title":"Кормушка бункерная для цыплят 1 л","price":179,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2651","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2635	2016-05-26 00:42:40.611791	2016-06-05 19:44:26.046095	farm	products	{"category_ids":[15,66],"title":"ПК-30 для гусей родительского стада","price":29,"unit":"кг","properties":{"animal_ids":[50]}}	{"_index":"farm","_type":"products","_id":"2635","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2637	2016-05-26 00:42:40.777645	2016-06-05 19:44:26.301934	farm	products	{"category_ids":[15,66],"title":"ПК-5 для бройлеров 1-4 нед","price":39,"unit":"кг","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2637","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2635	2016-05-26 00:42:40.611791	2016-06-14 21:47:40.22435	farm	products	{"category_ids":[15,66],"title":"ПК-30 для гусей родительского стада","price":29,"unit":"кг","properties":{"animal_ids":[50]},"images":[{"small":"/uploads/77/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_small.jpg","big":"/uploads/76/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2635","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2640	2016-05-26 00:42:41.047958	2016-06-05 19:44:26.613631	farm	products	{"category_ids":[15,67],"title":"Бункерная кормушка для кроликов-гигантов( бол)","price":600,"unit":"шт","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2640","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2641	2016-05-26 00:42:41.14892	2016-06-05 19:44:26.691267	farm	products	{"category_ids":[15,67],"title":"Бункерная кормушка из оцинковки для кроликов 1 кг","price":336,"unit":"шт","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2641","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2644	2016-05-26 00:42:41.464225	2016-06-05 19:44:26.925249	farm	products	{"category_ids":[15,67],"title":"Бункерная кормушка оцинкованная на 25 л","price":807,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2644","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2647	2016-05-26 00:42:41.726556	2016-06-05 19:44:27.180215	farm	products	{"category_ids":[15,67],"title":"Навесная кормушка для кур 80 см","price":387,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2647","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2650	2016-05-26 00:42:42.043913	2016-06-05 19:44:27.45885	farm	products	{"category_ids":[15,67],"title":"Инфракрасный нагреватель","price":714,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2650","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2637	2016-05-26 00:42:40.777645	2016-06-14 21:45:37.471261	farm	products	{"category_ids":[15,66],"title":"ПК-5 для бройлеров 1-4 нед","price":39,"unit":"кг","properties":{"animal_ids":[49,50,51,52]},"images":[{"small":"/uploads/77/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_small.jpg","big":"/uploads/76/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2637","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2652	2016-05-26 00:42:42.252524	2016-06-05 19:44:27.625649	farm	products	{"category_ids":[15,67],"title":"Кормушка бункерная для цыплят 3 кг","price":227,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2652","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2654	2016-05-26 00:42:42.435987	2016-06-05 19:44:27.780987	farm	products	{"category_ids":[15,67],"title":"Кормушка бункерная с крышкой 6кг. для кур (КБ-6)","price":445,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2654","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2657	2016-05-26 00:42:42.743906	2016-06-05 19:44:28.013748	farm	products	{"category_ids":[15,67],"title":"Ниппелная поилка ПКН-6 для взрослого поголовья птиц","price":30,"unit":"шт","properties":{"animal_ids":[49,51,52]}}	{"_index":"farm","_type":"products","_id":"2657","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2660	2016-05-26 00:42:43.062752	2016-06-05 19:44:28.28128	farm	products	{"category_ids":[15,67],"title":"Поилка вакуумная на 10 литров","price":548,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2660","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2663	2016-05-26 00:42:43.333411	2016-06-05 19:44:28.547593	farm	products	{"category_ids":[15,67],"title":"Поилка вакуумная на 7,5 литров","price":417,"unit":"шт","properties":{"animal_ids":[49,50,52]}}	{"_index":"farm","_type":"products","_id":"2663","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2664	2016-05-26 00:42:43.425032	2016-06-05 19:44:28.636352	farm	products	{"category_ids":[15,67],"title":"Поилка двойная с креплением и каплеулавливателем ПКНК-24/360","price":100,"unit":"шт","properties":{"animal_ids":[49,52]}}	{"_index":"farm","_type":"products","_id":"2664","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2667	2016-05-26 00:42:43.813004	2016-06-05 19:44:28.871249	farm	products	{"category_ids":[15,67],"title":"Поилка микрочашечная ПМЧ-10 для перепелов, тройник,крепеж отдельно","price":54,"unit":"шт","properties":{"animal_ids":[51]}}	{"_index":"farm","_type":"products","_id":"2667","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2670	2016-05-26 00:42:44.11533	2016-06-05 19:44:29.114363	farm	products	{"category_ids":[15,67],"title":"Поилка ПКН-7 для кроликов с резьбой и гайкой","price":47,"unit":"шт","properties":{"animal_ids":[55]}}	{"_index":"farm","_type":"products","_id":"2670","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2673	2016-05-26 00:42:44.45633	2016-06-05 19:44:29.370253	farm	products	{"category_ids":[15,67],"title":"Поилка ПКНК-14/360 с креплением и каплеулавливател","price":85,"unit":"шт","properties":{"animal_ids":[49,51,52]}}	{"_index":"farm","_type":"products","_id":"2673","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2676	2016-05-26 00:42:44.725594	2016-06-05 19:44:29.636897	farm	products	{"category_ids":[15,67],"title":"Тройник белый 8 мм","price":23,"unit":"шт","properties":{"animal_ids":[49,51,52,55]}}	{"_index":"farm","_type":"products","_id":"2676","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2673	2016-05-26 00:42:44.45633	2016-06-14 19:53:56.437351	farm	products	{"category_ids":[15,67],"title":"Поилка ПКНК-14/360 с креплением и каплеулавливател","price":85,"unit":"шт","properties":{"animal_ids":[49,51,52]},"images":[{"small":"/uploads/41/пкнк 14-360_small.jpg","big":"/uploads/40/пкнк 14-360_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2673","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2667	2016-05-26 00:42:43.813004	2016-06-14 20:08:10.467197	farm	products	{"category_ids":[15,67],"title":"Поилка микрочашечная ПМЧ-10 для перепелов, тройник,крепеж отдельно","price":54,"unit":"шт","properties":{"animal_ids":[51]},"images":[{"big":"/uploads/46/пмч-10_big.jpg","small":"/uploads/47/пмч-10_small.jpg"}]}	{"_index":"farm","_type":"products","_id":"2667","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 2678	2016-05-26 00:42:44.964882	2016-06-05 19:44:29.791967	farm	products	{"category_ids":[15,67],"title":"Шланг для ниппельного поения 10мм","price":39,"unit":"м","properties":{"animal_ids":[49,51,52,55]}}	{"_index":"farm","_type":"products","_id":"2678","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2681	2016-05-26 00:42:45.347969	2016-06-05 19:44:30.092354	farm	products	{"category_ids":[15,68],"title":"БВМД для кур-несушек и другой домашней птицы 500 гр","price":76,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2681","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2687	2016-05-26 00:42:46.002401	2016-06-05 19:44:30.614854	farm	products	{"category_ids":[15,68],"title":"Готовый корм для цыплят (2 кг) Б.","price":180,"unit":"шт","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2687","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -695,7 +584,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2716	2016-05-26 00:42:49.714618	2016-06-05 19:44:33.525339	farm	products	{"category_ids":[15,68],"title":"Премикс для профилактики птичьего гриппа 500г","price":130,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2716","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2719	2016-05-26 00:42:49.990052	2016-06-05 19:44:33.793471	farm	products	{"category_ids":[15,68],"title":"Премикс для свиней на откорме 300 гр","price":71,"unit":"шт","properties":{"animal_ids":[53]}}	{"_index":"farm","_type":"products","_id":"2719","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2723	2016-05-26 00:42:50.687633	2016-06-05 19:44:34.114816	farm	products	{"category_ids":[15,68],"title":"Премикс для улучшения качества скорлупы  \\"Скорлуп-Ca\\" 500г","price":85,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2723","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2726	2016-05-26 00:42:51.046341	2016-06-05 19:44:34.370714	farm	products	{"category_ids":[15,68],"title":"Премикс противоглист. профилакт.  для свиней (Альбазол-С) 300 г","price":79,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2726","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2729	2016-05-26 00:42:51.35974	2016-06-05 19:44:34.603673	farm	products	{"category_ids":[15,68],"title":"Ракушка калиброванная 1кг","price":47,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2729","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2765	2016-05-26 00:42:55.102129	2016-06-05 19:44:38.36006	farm	products	{"category_ids":[15,70],"title":"Бенг. Свечи \\"звездочка\\" (фигурная)","price":67,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2765","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2735	2016-05-26 00:42:52.024388	2016-06-05 19:44:35.104193	farm	products	{"category_ids":[15,68],"title":"Соль поваренная кормовая йод (брикет 5кг)","price":195,"unit":"шт","properties":{"animal_ids":[54]}}	{"_index":"farm","_type":"products","_id":"2735","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -720,7 +608,6 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2782	2016-05-26 00:42:56.878149	2016-06-05 19:44:39.760392	farm	products	{"category_ids":[15,70],"title":"Золотая рыбка","price":733,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2782","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2784	2016-05-26 00:42:57.046205	2016-06-05 19:44:39.92705	farm	products	{"category_ids":[15,70],"title":"Капитошка","price":1920,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2784","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2786	2016-05-26 00:42:57.262924	2016-06-05 19:44:40.094294	farm	products	{"category_ids":[15,70],"title":"Корсар-3","price":44,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2786","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2788	2016-05-26 00:42:57.444132	2016-06-05 19:44:40.337756	farm	products	{"category_ids":[15,70],"title":"Лимонка (с чекой)","price":55,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2788","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2811	2016-05-26 00:43:01.171135	2016-06-05 19:44:42.271569	farm	products	{"category_ids":[15,70],"title":"Пугач","price":78,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2811","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2791	2016-05-26 00:42:57.727458	2016-06-05 19:44:40.626809	farm	products	{"category_ids":[15,70],"title":"Малиновый звон","price":322,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2791","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2793	2016-05-26 00:42:57.903945	2016-06-05 19:44:40.815474	farm	products	{"category_ids":[15,70],"title":"Маугли","price":800,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2793","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -742,11 +629,16 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2832	2016-05-26 00:43:03.511775	2016-06-05 19:44:44.885374	farm	products	{"category_ids":[15,70],"title":"Хлопушка \\"Супер с серпантином\\"","price":119,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2832","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2835	2016-05-26 00:43:03.815347	2016-06-05 19:44:45.127623	farm	products	{"category_ids":[15,70],"title":"Час пик","price":2209,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2835","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2837	2016-05-26 00:43:03.990619	2016-06-05 19:44:45.362264	farm	products	{"category_ids":[15,70],"title":"Шаляй-валяй","price":3840,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2837","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2839	2016-05-26 00:43:04.208034	2016-06-05 19:44:45.539477	farm	products	{"category_ids":[15,71],"title":"Родентицидная прим \\"Крысиная смерть № 1\\"  (100гр.)","price":72,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2839","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2841	2016-05-26 00:43:04.394528	2016-06-05 19:44:45.717256	farm	products	{"category_ids":[15,71],"title":"Родентицидная приманка \\"ЩЕЛКУНЧИК\\" 0,1кг","price":58,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2841","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2845	2016-05-26 00:43:05.025365	2016-06-05 19:44:46.050081	farm	products	{"category_ids":[15,71],"title":"Энтомозан-Супер амп. 2мл","price":76,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2845","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2847	2016-05-26 00:43:05.204437	2016-06-05 19:44:46.217762	farm	products	{"category_ids":[15,71],"title":"Ловушка Mr.Mouse механ. от мышей (дерево)","price":43,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2847","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
-2851	2016-05-26 00:43:05.581987	2016-06-05 19:44:46.806899	farm	products	{"category_ids":[15,71],"title":"Клей EG euroguard для отлова грызунов 135 г.","price":219,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2851","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2461	2016-05-26 00:42:24.983996	2016-06-05 19:44:11.111021	farm	products	{"category_ids":[15,59],"title":"Е2019 100 ламп, цветные лампы","price":405,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2461","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2520	2016-05-26 00:42:30.384654	2016-06-05 19:44:15.155181	farm	products	{"category_ids":[15,64,112],"title":"ДОГ ЛАНЧ кон.д/собак 760г.","price":95,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[118]}}	{"_index":"farm","_type":"products","_id":"2520","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2517	2016-05-26 00:42:30.063508	2016-06-05 19:44:16.633097	farm	products	{"category_ids":[15,64,112],"title":"Вискас сух.д/кошек подушечки/паштет лосось/тунец/креветки 1,9 кг","price":366,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2517","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2543	2016-05-26 00:42:32.3286	2016-06-05 19:44:18.01341	farm	products	{"category_ids":[15,64,112],"title":"НМ для стерилизованных кошек в асс.400г.","price":67,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[96]}}	{"_index":"farm","_type":"products","_id":"2543","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2601	2016-05-26 00:42:37.354314	2016-06-05 19:44:21.179906	farm	products	{"category_ids":[15,64,112],"title":"ШЕБА ПАУЧ д/кошек курица/индейка 85г.","price":35,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[89]}}	{"_index":"farm","_type":"products","_id":"2601","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2617	2016-05-26 00:42:38.787385	2016-06-05 19:44:24.070464	farm	products	{"category_ids":[15,66],"title":"Ижевск ПК1 несушек 48 недель","price":20,"unit":"шт","properties":{"animal_ids":[49]}}	{"_index":"farm","_type":"products","_id":"2617","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2698	2016-05-26 00:42:47.144473	2016-06-05 19:44:31.814679	farm	products	{"category_ids":[15,68],"title":"Минеральный комплекс для домашней птицы 500 гр ДС","price":52,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2698","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2853	2016-05-26 00:43:05.761168	2016-06-05 19:44:48.940602	farm	products	{"category_ids":[15,71],"title":"Крысоловка (метал.)","price":73,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2853","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2855	2016-05-26 00:43:06.004816	2016-06-05 19:44:49.583888	farm	products	{"category_ids":[15,71],"title":"БойКот зерно 150 г. Жареное  мясо","price":30,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2855","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2856	2016-05-26 00:43:06.093756	2016-06-05 19:44:49.907426	farm	products	{"category_ids":[15,71],"title":"БойКот мягкий брикет К_С Подсолнух 100г","price":58,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2856","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
@@ -758,6 +650,40 @@ COPY products (id, created_at, updated_at, es_index, es_type, es_body, es_respon
 2590	2016-05-26 00:42:36.465254	2016-06-05 19:44:51.841909	farm	products	{"category_ids":[15,64,112],"title":"Фаворит Для взрослыхт собак всех пород 13 кг","price":1250,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[107]}}	{"_index":"farm","_type":"products","_id":"2590","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2585	2016-05-26 00:42:36.041287	2016-06-05 19:44:52.084464	farm	products	{"category_ids":[15,64,112],"title":"Терра Кот для взрослых кошек 2кг.","price":248,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[117]}}	{"_index":"farm","_type":"products","_id":"2585","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
 2550	2016-05-26 00:42:32.907445	2016-06-05 19:44:52.162532	farm	products	{"category_ids":[15,64,112],"title":"ПЕДИГРИ сух.д/собак крупных пород говядина 13 кг.","price":1664,"unit":"шт","properties":{"home_animal_ids":[93],"weight_ids":[107]}}	{"_index":"farm","_type":"products","_id":"2550","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2736	2016-05-26 00:42:52.112777	2016-06-05 19:44:35.270764	farm	products	{"category_ids":[15,68],"title":"Травяная мука 1,5кг","price":185,"unit":"шт","properties":{"animal_ids":[50,53,54,55]}}	{"_index":"farm","_type":"products","_id":"2736","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2738	2016-05-26 00:42:52.362726	2016-06-05 19:44:35.770727	farm	products	{"category_ids":[15,68],"title":"Цеолитовый природный комплекс  для домашней птицы 500 гр","price":57,"unit":"шт","properties":{"animal_ids":[49,50,51,52]}}	{"_index":"farm","_type":"products","_id":"2738","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2781	2016-05-26 00:42:56.734218	2016-06-05 19:44:39.683305	farm	products	{"category_ids":[15,70],"title":"Зимняя ночь","price":2520,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2781","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2809	2016-05-26 00:43:01.001764	2016-06-05 19:44:42.094824	farm	products	{"category_ids":[15,70],"title":"пневмохлопушка Свадебная 30 см (конф. сердце)","price":173,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2809","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2833	2016-05-26 00:43:03.636224	2016-06-05 19:44:44.973303	farm	products	{"category_ids":[15,70],"title":"Хлопушка \\"Супер\\"","price":88,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2833","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2840	2016-05-26 00:43:04.306302	2016-06-05 19:44:45.617558	farm	products	{"category_ids":[15,71],"title":"Родентицидная прим \\"Крысиная смерть № 1\\"  (200гр.)","price":120,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2840","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2519	2016-05-26 00:42:30.296706	2016-06-05 19:44:51.195245	farm	products	{"category_ids":[15,64,112],"title":"Вискис сух.д/котят подушечки с молоком индейка/морковь 350 г.","price":75,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[90]}}	{"_index":"farm","_type":"products","_id":"2519","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2518	2016-05-26 00:42:30.208193	2016-06-05 19:44:15.076819	farm	products	{"category_ids":[15,64,112],"title":"Вискис сух.д/котят подушечки с молоком индейка/морковь 1,9 кг.","price":435,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[102]}}	{"_index":"farm","_type":"products","_id":"2518","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2496	2016-05-26 00:42:28.239169	2016-06-05 19:44:15.233044	farm	products	{"category_ids":[15,64,112],"title":"Вака Люкс для Мелких и средних попугаев 1000г.","price":138,"unit":"шт","properties":{"home_animal_ids":[95],"weight_ids":[105]}}	{"_index":"farm","_type":"products","_id":"2496","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2540	2016-05-26 00:42:32.065053	2016-06-05 19:44:19.190447	farm	products	{"category_ids":[15,64,112],"title":"НМ для котят в асс.400г.","price":75,"unit":"шт","properties":{"home_animal_ids":[94],"weight_ids":[96]}}	{"_index":"farm","_type":"products","_id":"2540","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2623	2016-05-26 00:42:39.541808	2016-06-05 19:44:24.569385	farm	products	{"category_ids":[15,66],"title":"КК-111 Комбикорм-концетрат для рыбы","price":29,"unit":"кг","properties":{}}	{"_index":"farm","_type":"products","_id":"2623","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2726	2016-05-26 00:42:51.046341	2016-06-05 19:44:34.370714	farm	products	{"category_ids":[15,68],"title":"Премикс противоглист. профилакт.  для свиней (Альбазол-С) 300 г","price":79,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2726","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2788	2016-05-26 00:42:57.444132	2016-06-05 19:44:40.337756	farm	products	{"category_ids":[15,70],"title":"Лимонка (с чекой)","price":55,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2788","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2839	2016-05-26 00:43:04.208034	2016-06-05 19:44:45.539477	farm	products	{"category_ids":[15,71],"title":"Родентицидная прим \\"Крысиная смерть № 1\\"  (100гр.)","price":72,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2839","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2851	2016-05-26 00:43:05.581987	2016-06-05 19:44:46.806899	farm	products	{"category_ids":[15,71],"title":"Клей EG euroguard для отлова грызунов 135 г.","price":219,"unit":"шт","properties":{}}	{"_index":"farm","_type":"products","_id":"2851","_version":1,"_shards":{"total":2,"successful":1,"failed":0},"created":true}
+2628	2016-05-26 00:42:40.01489	2016-06-14 21:36:15.260315	farm	products	{"category_ids":[15,66],"title":"ПЗК-91 для кроликов","price":20,"unit":"кг","properties":{"animal_ids":[55]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2628","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2632	2016-05-26 00:42:40.360445	2016-06-14 21:39:14.0614	farm	products	{"category_ids":[15,66],"title":"ПК-1/2 ПЗ для кур несушек 48 нед. и старше","price":16,"unit":"кг","properties":{"animal_ids":[49]},"images":[{"small":"/uploads/75/пк-1-2 пз, пк1-2 ершов, пк-4_small.jpg","big":"/uploads/74/пк-1-2 пз, пк1-2 ершов, пк-4_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2632","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2636	2016-05-26 00:42:40.690225	2016-06-14 21:41:13.826808	farm	products	{"category_ids":[15,66],"title":"ПК-4 для молод кур 14-17 нед.","price":25,"unit":"кг","properties":{},"images":[{"small":"/uploads/75/пк-1-2 пз, пк1-2 ершов, пк-4_small.jpg","big":"/uploads/74/пк-1-2 пз, пк1-2 ершов, пк-4_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2636","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2638	2016-05-26 00:42:40.856726	2016-06-14 21:46:11.884394	farm	products	{"category_ids":[15,66],"title":"ПК-6 для бройлеров 5 нед и старше","price":37,"unit":"кг","properties":{"animal_ids":[49]},"images":[{"small":"/uploads/77/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_small.jpg","big":"/uploads/76/пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2638","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2676	2016-05-26 00:42:44.725594	2016-06-14 20:14:18.214244	farm	products	{"category_ids":[15,67],"title":"Тройник белый 8 мм","price":23,"unit":"шт","properties":{"animal_ids":[49,51,52,55]},"images":[{"small":"/uploads/51/тройник 8мм_small.jpg","big":"/uploads/50/тройник 8мм_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2676","_version":5,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2665	2016-05-26 00:42:43.623656	2016-06-13 22:17:02.059349	farm	products	{"category_ids":[15,67],"title":"Поилка для кроликов ПКН-10 в комплекте с крепление","price":54,"unit":"шт","properties":{"animal_ids":[55]},"images":[{"big":"/uploads/34/пкн 10_big.jpg","small":"/uploads/35/пкн 10_small.jpg"}]}	{"_index":"farm","_type":"products","_id":"2665","_version":3,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2670	2016-05-26 00:42:44.11533	2016-06-13 22:20:24.544244	farm	products	{"category_ids":[15,67],"title":"Поилка ПКН-7 для кроликов с резьбой и гайкой","price":47,"unit":"шт","properties":{"animal_ids":[55]},"images":[{"small":"/uploads/37/пкн-7_small.jpg","big":"/uploads/36/пкн-7_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2670","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2672	2016-05-26 00:42:44.353057	2016-06-14 19:57:27.492067	farm	products	{"category_ids":[15,67],"title":"Поилка ПКНК-12/360 оснащена креплением под круглую трубу 25 мм","price":80,"unit":"шт","properties":{"animal_ids":[49,51,52]},"images":[{"big":"/uploads/42/пкнк-12-360_big.jpg","small":"/uploads/43/пкнк-12-360_small.jpg"}]}	{"_index":"farm","_type":"products","_id":"2672","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2465	2016-05-26 00:42:25.306571	2016-06-13 18:43:40.463305	farm	products	{"category_ids":[15,59],"title":"Е50539  рис.Снежинка 25мм, 100 ламп, цветная.5,2 м+1,5м","price":605,"unit":"шт","properties":{},"images":[{"small":"http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_2_v1.jpg","big":"http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_2_v1.jpg"},{"small":"http://pi1.lmcdn.ru/img389x562/N/E/NE007AUHIG83_3_v1.jpg","big":"http://pi1.lmcdn.ru/product/N/E/NE007AUHIG83_3_v1.jpg"},{"small":"http://pi2.lmcdn.ru/img389x562/V/I/VI005EWHYI64_1_v1.jpg","big":"http://pi2.lmcdn.ru/product/V/I/VI005EWHYI64_1_v1.jpg"},{"small":"http://pi1.lmcdn.ru/img389x562/C/O/CO011AUFZ698_4_v2.jpg","big":"http://pi1.lmcdn.ru/product/C/O/CO011AUFZ698_4_v2.jpg"},{"small":"http://pi1.lmcdn.ru/img389x562/C/H/CH041EWIAT62_6_v1.jpg","big":"http://pi1.lmcdn.ru/product/C/H/CH041EWIAT62_6_v1.jpg"}]}	{"_index":"farm","_type":"products","_id":"2465","_version":5,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2620	2016-05-26 00:42:39.224066	2016-06-14 21:34:18.011962	farm	products	{"category_ids":[15,66],"title":"К-58 КР для откорма свиней до жирн. конд.","price":21,"unit":"кг","properties":{"animal_ids":[53]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2620","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2677	2016-05-26 00:42:44.816388	2016-06-14 20:16:05.893205	farm	products	{"category_ids":[15,67],"title":"Тройник красный 10 мм","price":34,"unit":"шт","properties":{"animal_ids":[49,51,52,55]},"images":[{"small":"/uploads/53/тройник 10мм_small.jpg","big":"/uploads/52/тройник 10мм_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2677","_version":5,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2477	2016-05-26 00:42:26.428122	2016-06-14 20:52:53.051897	farm	products	{"category_ids":[15,63],"title":"Зерновая смесь для птицы","price":25,"unit":"кг","properties":{"animal_ids":[49,50,51,52]},"images":[{"small":"/uploads/57/Кормовая смесь для птицы_small.jpg","big":"/uploads/56/Кормовая смесь для птицы_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2477","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2478	2016-05-26 00:42:26.588385	2016-06-14 20:56:24.233982	farm	products	{"category_ids":[15,63],"title":"Кукуруза","price":19,"unit":"кг","properties":{"animal_ids":[49,50,52,53,55]},"images":[{"small":"/uploads/59/Кукуруза_small.jpg","big":"/uploads/58/Кукуруза_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2478","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2618	2016-05-26 00:42:38.876429	2016-06-14 21:33:10.100472	farm	products	{"category_ids":[15,66],"title":"К-58 ГР ПЗ для откорма свин. до жирн. конд.","price":16,"unit":"кг","properties":{"animal_ids":[53]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2618","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2650	2016-05-26 00:42:42.043913	2016-06-13 21:52:22.823878	farm	products	{"category_ids":[15,67],"title":"Инфракрасный нагреватель","price":714,"unit":"шт","properties":{"animal_ids":[49,50,51,52]},"images":[{"small":"/uploads/26/Инфрокрасный нагреватель_small.jpg","big":"/uploads/22/Инфрокрасный нагреватель_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2650","_version":6,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2621	2016-05-26 00:42:39.331126	2016-06-14 21:35:02.879231	farm	products	{"category_ids":[15,66],"title":"К-60 для коров специальный","price":18,"unit":"кг","properties":{"animal_ids":[54]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2621","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2658	2016-05-26 00:42:42.828811	2016-06-13 22:12:56.673999	farm	products	{"category_ids":[15,67],"title":"Ниппель ПКН-6/360 для бройлеров и перепелов","price":40,"unit":"шт","properties":{"animal_ids":[49,51,52]},"images":[{"big":"/uploads/32/пкн 6-360_big.jpg","small":"/uploads/33/пкн 6-360_small.jpg"}]}	{"_index":"farm","_type":"products","_id":"2658","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2619	2016-05-26 00:42:39.043649	2016-06-14 21:34:03.535409	farm	products	{"category_ids":[15,66],"title":"К-58 для откорма свиней специальный","price":18,"unit":"кг","properties":{"animal_ids":[53]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2619","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
+2639	2016-05-26 00:42:40.957147	2016-06-14 21:35:53.473231	farm	products	{"category_ids":[15,66],"title":"СК Смесь кормовая","price":17,"unit":"кг","properties":{"animal_ids":[49,50,52,53,54,55]},"images":[{"small":"/uploads/73/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg","big":"/uploads/72/к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg"}]}	{"_index":"farm","_type":"products","_id":"2639","_version":2,"_shards":{"total":2,"successful":1,"failed":0},"created":false}
 \.
 
 
@@ -803,6 +729,8 @@ COPY schema_migrations (version) FROM stdin;
 20160603173351
 20160603173353
 20160605164817
+20160613142322
+20160613175350
 \.
 
 
@@ -945,9 +873,7 @@ COPY trees (id, es_index, es_type, es_body, parent_id, created_at, updated_at, s
 59	farm	category_ids	{"title":"Гирлянды"}	15	2016-05-25 23:37:04.885916	2016-05-26 00:54:42.850793	\N
 60	farm	category_ids	{"title":"Дерево"}	15	2016-05-25 23:37:05.018035	2016-05-26 00:55:00.479293	\N
 93	farm	home_animal_ids	{"title":"Собаки"}	92	2016-05-26 02:12:11.593668	2016-05-26 02:12:40.900108	1
-55	farm	animal_ids	{"title":"Кролики, нутрии","thumbnail":"/farm/animals/zayac.png"}	27	2016-05-25 21:53:47.916986	2016-05-26 08:12:20.886585	\N
 94	farm	home_animal_ids	{"title":"Кошки"}	92	2016-05-26 02:13:12.257148	2016-05-26 02:13:12.257148	2
-64	farm	category_ids	{"title":"Дом. животные","options":["home_animal_ids","weight_ids"]}	15	2016-05-25 23:37:05.181193	2016-05-26 04:52:12.202376	\N
 88	farm	weight_ids	{"title":"Масса корма"}	\N	2016-05-26 02:06:06.561527	2016-05-26 04:38:34.394917	0
 95	farm	home_animal_ids	{"title":"Попугаи"}	92	2016-05-26 02:13:21.291922	2016-05-26 06:39:22.465532	0
 112	farm	category_ids	{"title":"Корма","options":["home_animal_ids","weight_ids"]}	64	2016-05-26 04:45:45.916291	2016-05-26 04:54:04.472819	0
@@ -968,12 +894,6 @@ COPY trees (id, es_index, es_type, es_body, parent_id, created_at, updated_at, s
 71	farm	category_ids	{"title":"Средства защиты"}	15	2016-05-25 23:37:06.398704	2016-05-26 00:56:55.943323	\N
 68	farm	category_ids	{"title":"Премиксы","options":["animal_ids"]}	15	2016-05-25 23:37:05.739149	2016-05-26 00:58:49.645168	\N
 98	farm	weight_ids	{"title":"600 г"}	88	2016-05-26 03:45:17.773806	2016-05-26 04:01:06.054457	7
-52	farm	animal_ids	{"title":"Индейки","thumbnail":"/farm/animals/indeika.png"}	27	2016-05-25 21:53:23.357335	2016-05-26 01:18:55.571938	\N
-53	farm	animal_ids	{"title":"Свиньи","thumbnail":"/farm/animals/sviniya.png"}	27	2016-05-25 21:53:30.103236	2016-05-26 01:20:42.909351	\N
-49	farm	animal_ids	{"title":"Куры","thumbnail":"/farm/animals/kurica.png"}	27	2016-05-25 21:52:54.087768	2016-05-26 01:21:40.176341	\N
-50	farm	animal_ids	{"title":"Гуси, утки","thumbnail":"/farm/animals/gus.png"}	27	2016-05-25 21:53:11.335848	2016-05-26 01:23:13.367417	\N
-51	farm	animal_ids	{"title":"Перепела","thumbnail":"/farm/animals/perepelka.jpg"}	27	2016-05-25 21:53:16.527078	2016-05-26 01:24:12.317576	\N
-54	farm	animal_ids	{"title":"Крупный рогатый скот, козы, овцы","thumbnail":"/farm/animals/korova.png"}	27	2016-05-25 21:53:38.144726	2016-05-26 01:27:14.365968	\N
 97	farm	weight_ids	{"title":"500 г"}	88	2016-05-26 03:22:21.879674	2016-05-26 04:01:51.464068	6
 96	farm	weight_ids	{"title":"400 г"}	88	2016-05-26 03:21:43.095531	2016-05-26 04:02:02.966588	5
 89	farm	weight_ids	{"title":"85 г"}	88	2016-05-26 02:08:41.699861	2016-05-26 04:02:22.238909	0
@@ -995,6 +915,14 @@ COPY trees (id, es_index, es_type, es_body, parent_id, created_at, updated_at, s
 103	farm	weight_ids	{"title":"1,2 кг"}	88	2016-05-26 03:46:33.561992	2016-05-26 06:06:14.520374	12
 120	farm	weight_ids	{"title":"2,2 кг"}	88	2016-05-26 06:31:36.125242	2016-05-26 06:31:57.177672	16
 117	farm	weight_ids	{"title":"2 кг"}	88	2016-05-26 06:12:12.367879	2016-05-26 06:32:00.048384	15
+49	farm	animal_ids	{"title":"Куры","thumbnail":"/uploads/3/kurica.png"}	27	2016-05-25 21:52:54.087768	2016-06-13 14:47:40.722245	\N
+55	farm	animal_ids	{"title":"Кролики, нутрии","thumbnail":"/uploads/9/zayac.png"}	27	2016-05-25 21:53:47.916986	2016-06-13 14:54:13.223711	\N
+52	farm	animal_ids	{"title":"Индейки","thumbnail":"/uploads/4/indeika.png"}	27	2016-05-25 21:53:23.357335	2016-06-13 14:49:47.481905	\N
+50	farm	animal_ids	{"title":"Гуси, утки","thumbnail":"/uploads/5/gus.png"}	27	2016-05-25 21:53:11.335848	2016-06-13 14:50:30.02556	\N
+51	farm	animal_ids	{"title":"Перепела","thumbnail":"/uploads/6/perepelka.jpg"}	27	2016-05-25 21:53:16.527078	2016-06-13 14:51:37.561738	\N
+53	farm	animal_ids	{"title":"Свиньи","thumbnail":"/uploads/7/sviniya.png"}	27	2016-05-25 21:53:30.103236	2016-06-13 14:52:26.062161	\N
+54	farm	animal_ids	{"title":"Крупный рогатый скот, козы, овцы","thumbnail":"/uploads/8/korova.png"}	27	2016-05-25 21:53:38.144726	2016-06-13 14:53:19.9193	\N
+64	farm	category_ids	{"title":"Дом. животные","options":["home_animal_ids"]}	15	2016-05-25 23:37:05.181193	2016-06-13 17:39:46.233223	\N
 \.
 
 
@@ -1006,27 +934,83 @@ SELECT pg_catalog.setval('trees_id_seq', 126, true);
 
 
 --
+-- Data for Name: uploads; Type: TABLE DATA; Schema: public; Owner: woto
+--
+
+COPY uploads (id, file, created_at, updated_at, es_index) FROM stdin;
+73	к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_small.jpg	2016-06-14 21:32:12.185458	2016-06-14 21:32:12.185458	farm
+74	пк-1-2 пз, пк1-2 ершов, пк-4_big.jpg	2016-06-14 21:38:09.215501	2016-06-14 21:38:09.215501	farm
+75	пк-1-2 пз, пк1-2 ершов, пк-4_small.jpg	2016-06-14 21:38:15.912471	2016-06-14 21:38:15.912471	farm
+76	пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_big.jpg	2016-06-14 21:42:38.791692	2016-06-14 21:42:38.791692	farm
+77	пк-2, пк-4, пк-5, пк-6, пк1п, пк-30_small.jpg	2016-06-14 21:42:44.656853	2016-06-14 21:42:44.656853	farm
+3	kurica.png	2016-06-13 14:46:41.858094	2016-06-13 14:46:41.858094	farm
+4	indeika.png	2016-06-13 14:49:25.668757	2016-06-13 14:49:25.668757	farm
+5	gus.png	2016-06-13 14:50:09.523718	2016-06-13 14:50:09.523718	farm
+6	perepelka.jpg	2016-06-13 14:51:24.515223	2016-06-13 14:51:24.515223	farm
+7	sviniya.png	2016-06-13 14:52:15.010013	2016-06-13 14:52:15.010013	farm
+8	korova.png	2016-06-13 14:53:03.558292	2016-06-13 14:53:03.558292	farm
+9	zayac.png	2016-06-13 14:54:01.548807	2016-06-13 14:54:01.548807	farm
+22	Инфрокрасный нагреватель_big.jpg	2016-06-13 21:46:06.960166	2016-06-13 21:46:06.960166	farm
+26	Инфрокрасный нагреватель_small.jpg	2016-06-13 21:52:12.164899	2016-06-13 21:52:12.164899	farm
+30	пжн 8-360_big.jpg	2016-06-13 21:59:00.757701	2016-06-13 21:59:00.757701	farm
+31	пжн 8-360_small.jpg	2016-06-13 21:59:08.150923	2016-06-13 21:59:08.150923	farm
+32	пкн 6-360_big.jpg	2016-06-13 22:12:22.607682	2016-06-13 22:12:22.607682	farm
+33	пкн 6-360_small.jpg	2016-06-13 22:12:30.756657	2016-06-13 22:12:30.756657	farm
+34	пкн 10_big.jpg	2016-06-13 22:16:09.788045	2016-06-13 22:16:09.788045	farm
+35	пкн 10_small.jpg	2016-06-13 22:16:17.93985	2016-06-13 22:16:17.93985	farm
+36	пкн-7_big.jpg	2016-06-13 22:19:57.705187	2016-06-13 22:19:57.705187	farm
+37	пкн-7_small.jpg	2016-06-13 22:20:05.455008	2016-06-13 22:20:05.455008	farm
+38	пкн-9_big.jpg	2016-06-14 19:37:49.780254	2016-06-14 19:37:49.780254	farm
+39	пкн-9_small.jpg	2016-06-14 19:38:03.072078	2016-06-14 19:38:03.072078	farm
+40	пкнк 14-360_big.jpg	2016-06-14 19:52:46.887091	2016-06-14 19:52:46.887091	farm
+41	пкнк 14-360_small.jpg	2016-06-14 19:52:54.551965	2016-06-14 19:52:54.551965	farm
+42	пкнк-12-360_big.jpg	2016-06-14 19:56:20.309023	2016-06-14 19:56:20.309023	farm
+43	пкнк-12-360_small.jpg	2016-06-14 19:56:29.892554	2016-06-14 19:56:29.892554	farm
+44	пкнс 8_big.jpg	2016-06-14 20:00:40.57853	2016-06-14 20:00:40.57853	farm
+45	пкнс 8_small.jpg	2016-06-14 20:00:56.860164	2016-06-14 20:00:56.860164	farm
+46	пмч-10_big.jpg	2016-06-14 20:07:43.779637	2016-06-14 20:07:43.779637	farm
+47	пмч-10_small.jpg	2016-06-14 20:07:51.252294	2016-06-14 20:07:51.252294	farm
+48	псн-33_big.jpg	2016-06-14 20:10:24.325563	2016-06-14 20:10:24.325563	farm
+49	псн-33_small.jpg	2016-06-14 20:10:38.927959	2016-06-14 20:10:38.927959	farm
+50	тройник 8мм_big.jpg	2016-06-14 20:13:16.705556	2016-06-14 20:13:16.705556	farm
+51	тройник 8мм_small.jpg	2016-06-14 20:14:08.980539	2016-06-14 20:14:08.980539	farm
+52	тройник 10мм_big.jpg	2016-06-14 20:15:28.546121	2016-06-14 20:15:28.546121	farm
+53	тройник 10мм_small.jpg	2016-06-14 20:15:56.915064	2016-06-14 20:15:56.915064	farm
+54	штуцер_big.jpg	2016-06-14 20:18:56.566929	2016-06-14 20:18:56.566929	farm
+55	штуцер_small.jpg	2016-06-14 20:20:17.756447	2016-06-14 20:20:17.756447	farm
+56	Кормовая смесь для птицы_big.jpg	2016-06-14 20:49:07.371632	2016-06-14 20:49:07.371632	farm
+57	Кормовая смесь для птицы_small.jpg	2016-06-14 20:49:20.285286	2016-06-14 20:49:20.285286	farm
+58	Кукуруза_big.jpg	2016-06-14 20:49:27.202938	2016-06-14 20:49:27.202938	farm
+59	Кукуруза_small.jpg	2016-06-14 20:49:39.931686	2016-06-14 20:49:39.931686	farm
+60	Овес_big.jpg	2016-06-14 20:49:47.814197	2016-06-14 20:49:47.814197	farm
+61	Овес_small.jpg	2016-06-14 20:49:56.592558	2016-06-14 20:49:56.592558	farm
+62	Просо_big.jpg	2016-06-14 20:50:03.973756	2016-06-14 20:50:03.973756	farm
+63	Просо_small.jpg	2016-06-14 20:50:10.910204	2016-06-14 20:50:10.910204	farm
+64	Пшеница_big.jpg	2016-06-14 20:50:17.259065	2016-06-14 20:50:17.259065	farm
+65	Пшеница_small.jpg	2016-06-14 20:50:23.917037	2016-06-14 20:50:23.917037	farm
+66	Размол зерновых №2_big.jpg	2016-06-14 20:50:33.07363	2016-06-14 20:50:33.07363	farm
+67	Размол зерновых №2_small.jpg	2016-06-14 20:50:41.10023	2016-06-14 20:50:41.10023	farm
+68	Размол кукурузы_big.jpg	2016-06-14 20:50:51.708302	2016-06-14 20:50:51.708302	farm
+69	Размол кукурузы_small.jpg	2016-06-14 20:50:57.425962	2016-06-14 20:50:57.425962	farm
+70	Ячмень_big.jpg	2016-06-14 20:51:05.097481	2016-06-14 20:51:05.097481	farm
+71	Ячмень_small.jpg	2016-06-14 20:51:10.427796	2016-06-14 20:51:10.427796	farm
+72	к-58 гр пз, к-58, к-58 кр, к-60, к-65, ск, пзк-91, пк-10_big.jpg	2016-06-14 21:32:06.318036	2016-06-14 21:32:06.318036	farm
+\.
+
+
+--
+-- Name: uploads_id_seq; Type: SEQUENCE SET; Schema: public; Owner: woto
+--
+
+SELECT pg_catalog.setval('uploads_id_seq', 77, true);
+
+
+--
 -- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: woto
 --
 
 ALTER TABLE ONLY ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: woto
---
-
-ALTER TABLE ONLY categories
-    ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
-
-
---
--- Name: indices_pkey; Type: CONSTRAINT; Schema: public; Owner: woto
---
-
-ALTER TABLE ONLY indices
-    ADD CONSTRAINT indices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1059,6 +1043,14 @@ ALTER TABLE ONLY schema_migrations
 
 ALTER TABLE ONLY trees
     ADD CONSTRAINT trees_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: uploads_pkey; Type: CONSTRAINT; Schema: public; Owner: woto
+--
+
+ALTER TABLE ONLY uploads
+    ADD CONSTRAINT uploads_pkey PRIMARY KEY (id);
 
 
 --
