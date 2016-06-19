@@ -1,8 +1,8 @@
 <h2 class="m-b-2">
   <% if @category && !@category.root? %>
-    <%= @category.es_body['title'] %>
+    <%= @meta_title = @category.es_body['title'] %>
   <% else %>
-    Все товары
+    <%= @meta_title = 'Все товары' %>
   <% end %>
 </h2>
 

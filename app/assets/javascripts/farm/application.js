@@ -20,7 +20,10 @@
 //= require bootstrap/js/dist/popover
 //
 //= require noUiSlider/distribute/nouislider
-//= require slick/slick/slick
+//  throught submodule
+//  require slick/slick/slick
+//  throught gem
+//= require jquery.slick
 //= require zoom/jquery.zoom
 //
 //= require farm/products

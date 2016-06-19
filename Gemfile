@@ -66,3 +66,4 @@ gem 'simple_form', path: '../simple_form'
 gem 'dotenv-rails', :groups => [:development, :test]
 gem 'carrierwave'
 gem 'devise'
+gem 'jquery-slick-rails'

@@ -1,6 +1,9 @@
-//= require slick/slick/slick
-//= require slick/slick/slick-theme
-
+//  throught gem
+@import 'slick';
+@import 'slick-theme';
+//  throught submodule
+//  require slick/slick/slick
+//  require slick/slick/slick-theme
 
 // TODO Почему-то криво -2/0
 .slick-prev {
@@ -18,4 +21,8 @@
   color: #999;
   font-size: 3rem;
 }
-
+.vcenter {
+  display: inline-block;
+  vertical-align: middle;
+  float: none !important;
+}

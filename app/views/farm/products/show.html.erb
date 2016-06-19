@@ -4,17 +4,9 @@
     <div class="col-xs-24 col-lg-24 col-xl-20">
 
       <%= row do %>
-        <h2 class="m-b-2"><%= @product.es_body['title'] %></h2>
+        <h2 class="m-b-2"><%= @meta_title = @product.es_body['title'] %></h2>
 
         <%= render 'farm/products/breadcrumb' %>
-
-        <style>
-          .vcenter {
-              display: inline-block;
-              vertical-align: middle;
-              float: none;
-          }
-        </style>
 
         <%= row do %>
           <div class="col-xs-24 col-xl-16 col-lg-17 vcenter">
