@@ -1,0 +1,8 @@
+/*!
+ * JavaScript for Bootstrap's docs (http://getbootstrap.com)
+ * Copyright 2011-2016 The Bootstrap Authors
+ * Copyright 2011-2016 Twitter, Inc.
+ * Licensed under the Creative Commons Attribution 3.0 Unported License. For
+ * details, see https://creativecommons.org/licenses/by/3.0/.
+ */
+!function(t){"use strict";t(function(){t(".tooltip-demo").tooltip({selector:'[data-toggle="tooltip"]',container:"body"}),t('[data-toggle="popover"]').popover(),t(".tooltip-test").tooltip(),t(".popover-test").popover(),t('.bd-example-indeterminate [type="checkbox"]').prop("indeterminate",!0),t('.bd-example [href="#"]').click(function(t){t.preventDefault()}),t("#exampleModal").on("show.bs.modal",function(o){var e=t(o.relatedTarget),i=e.data("whatever"),n=t(this);n.find(".modal-title").text("New message to "+i),n.find(".modal-body input").val(i)}),t(".highlight").each(function(){var o='<div class="bd-clipboard"><span class="btn-clipboard" title="Copy to clipboard">Copy</span></div>';t(this).before(o),t(".btn-clipboard").tooltip()});var o=new Clipboard(".btn-clipboard",{target:function(t){return t.parentNode.nextElementSibling}});o.on("success",function(o){t(o.trigger).attr("title","Copied!").tooltip("_fixTitle").tooltip("show").attr("title","Copy to clipboard").tooltip("_fixTitle"),o.clearSelection()}),o.on("error",function(o){var e=/Mac/i.test(navigator.userAgent)?"Press \u2318 to copy":"Press Ctrl-C to copy";t(o.trigger).attr("title",e).tooltip("_fixTitle").tooltip("show").attr("title","Copy to clipboard").tooltip("_fixTitle")})})}(jQuery),function(){"use strict";anchors.options.placement="left",anchors.add(".bd-content > h1, .bd-content > h2, .bd-content > h3, .bd-content > h4, .bd-content > h5")}();
