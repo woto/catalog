@@ -1,17 +1,20 @@
-<div class="m-t-3 m-b-3">
-  <%= categories_tree(categories_root.hash_tree) %>
-</div>
-
-<% @option_titles.each do |option_title| %>
-  <div class="m-b-1">
-    <%= option_filter option_title %>
+<div class="search-filters-inside m-t-3 m-b-3">
+  <div class="m-b-3">
+    <h5>Категория</h5>
+    <%= categories_tree(categories_root.hash_tree) %>
   </div>
-<% end if @option_titles %>
 
-<div class="m-b-1">
-  <p>Цена</p>
-  <%= text_field_tag :min_price, @min_price, data: {"price-param": params[:min_price], "price-range": @min_price_range['min_price']['value'].to_i}, class: 'js-filter-control js-filter-text-input js-filter-price form-control form-control-sm min-price-input' %>
-  -
-  <%= text_field_tag :max_price, @max_price, data: {"price-param": params[:max_price], "price-range": @max_price_range['max_price']['value'].to_i}, class: 'js-filter-control js-filter-text-input js-filter-price form-control form-control-sm max-price-input' %>
-  <div class="price-slider m-t-1"></div>
+  <% @option_titles.each do |option_title| %>
+    <div class="m-b-1">
+      <%= option_filter option_title %>
+    </div>
+  <% end if @option_titles %>
+
+  <div class="m-b-1">
+    <h5>Цена</h5>
+    <%= text_field_tag :min_price, @min_price, data: {"price-param": params[:min_price], "price-range": @min_price_range['min_price']['value'].to_i}, class: 'js-filter-control js-filter-text-input js-filter-price form-control form-control-sm min-price-input' %>
+    -
+    <%= text_field_tag :max_price, @max_price, data: {"price-param": params[:max_price], "price-range": @max_price_range['max_price']['value'].to_i}, class: 'js-filter-control js-filter-text-input js-filter-price form-control form-control-sm max-price-input' %>
+    <div class="price-slider m-t-1"></div>
+  </div>
 </div>

@@ -148,3 +148,13 @@ var init_slider = function(){
 document.addEventListener("turbolinks:load", function() {
   init_slider();
 });
+
+document.addEventListener("turbolinks:load", function() {
+  $('.search-filters').stick_in_parent()
+    .on('sticky_kit:bottom', function(e) {
+        $(this).parent().css('position', 'static');
+    })
+    .on('sticky_kit:unbottom', function(e) {
+        $(this).parent().css('position', 'relative');
+    })
+});

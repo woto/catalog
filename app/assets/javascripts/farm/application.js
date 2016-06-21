@@ -6,6 +6,7 @@
 //= require URI.js/src/URI.js
 //= require holderjs
 //= require tether
+//= require sticky-kit/dist/sticky-kit.js
 //
 //= require bootstrap/js/dist/util
 //= require bootstrap/js/dist/alert

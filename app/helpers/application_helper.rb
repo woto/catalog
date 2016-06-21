@@ -65,7 +65,7 @@ module ApplicationHelper
   end
 
   def option_filter(title)
-    concat content_tag :p, Tree.roots.where(es_index: 'farm', es_type: title).first.es_body['title']
+    concat content_tag :h5, Tree.roots.where(es_index: 'farm', es_type: title).first.es_body['title']
     content_tag :div, class: "custom-controls-stacked" do
       options_root(title).children.each do |value|
         custom_orange = @option_values[title] && @option_values[title].find{|el| el.id == value.id} ? "custom-orange" : ""
