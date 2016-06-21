@@ -22,3 +22,6 @@
 [submodule "system/submodules/URI.js"]
 	path = system/submodules/URI.js
 	url = https://github.com/medialize/URI.js
+[submodule "system/submodules/sticky-kit"]
+	path = system/submodules/sticky-kit
+	url = https://github.com/leafo/sticky-kit
